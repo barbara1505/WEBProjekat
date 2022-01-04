@@ -54,6 +54,9 @@ namespace WEBProjekat.Controllers
             iznajmljivanje.Knjiga=naslov;
             try
             {
+                naslov.BrojPrimeraka--;
+                Context.Knjige.Update(naslov);
+                
                 Context.Iznajmljivanje.Add(iznajmljivanje);
                 await Context.SaveChangesAsync();
                 return Ok("Dodato je novo iznajmljivanje!");
@@ -63,5 +66,34 @@ namespace WEBProjekat.Controllers
                 return BadRequest(e.InnerException.Message);
             }
         }
+
+        [Route("Vracanje knjige/{Id}/{Datum}")]
+        [HttpPut]
+         public async Task<ActionResult> VracanjeKnjige(int Id, DateTime Datum)
+        {
+            try
+            {
+                var iznajmljivanje = Context.Iznajmljivanje.Include(p=>p.Knjiga).Where(p=>p.Id_iznajmljivanje==Id).FirstOrDefault();
+
+                if(iznajmljivanje!=null)
+                {
+                    iznajmljivanje.DatumVracanja=Datum;
+                    iznajmljivanje.Knjiga.BrojPrimeraka++;
+                }
+                else
+                    return BadRequest($"Ovo iznajmljivanje ne postoji!");
+                
+                Context.Iznajmljivanje.Update(iznajmljivanje);
+                Context.Knjige.Update(iznajmljivanje.Knjiga);
+                await Context.SaveChangesAsync();
+                return Ok($"Promenjeni su podaci o iznajmljivanju:{Id}");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+        
     }
 }
