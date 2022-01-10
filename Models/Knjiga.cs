@@ -34,7 +34,7 @@ namespace Models
         [JsonIgnore]
         public List<Iznajmljivanje> Izdate { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public Autor Autor { get; set; }
 
     }

@@ -19,7 +19,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Dodaj autora/{ime}/{prezime}/{godina_rodjenja}/{godina_smrti}")]
+        [Route("Dodaj_Autora/{ime}/{prezime}/{godina_rodjenja}/{godina_smrti}")]
         [HttpPost]
         public async Task<ActionResult> Dodaj_autora(string ime, string prezime, int? godina_rodjenja, int? godina_smrti )
         {
@@ -49,7 +49,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("O autoru/{Ime}/{Prezime}")]
+        [Route("O_Autoru/{Ime}/{Prezime}")]
         [HttpGet]
         public ActionResult VratiAutora(string Ime, string Prezime)
         {
@@ -60,7 +60,7 @@ namespace WEBProjekat.Controllers
             return Ok(autor);// kako da vratim listu knjiga koje je napisao autor
         }
 
-        [Route("Ukloni autora/{Ime}/{Prezime}")]
+        [Route("Ukloni_Autora/{Ime}/{Prezime}")]
         [HttpDelete]
         public async Task<ActionResult> UkloniAutora(string Ime, string Prezime)
         {
@@ -91,7 +91,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Uredi autora/{Ime}/{Prezime}")]
+        [Route("Uredi_Autora/{Ime}/{Prezime}")]
         [HttpPut]
         public async Task<ActionResult> UrediAutora(string Ime, string Prezime, int godina_smrti)
         {
@@ -120,7 +120,7 @@ namespace WEBProjekat.Controllers
 
         }
 
-        [Route("Dodaj knjigu autoru/{Ime}/{Prezime}/{Naslov}")]
+        [Route("Dodaj_Knjigu_Autoru/{Ime}/{Prezime}/{Naslov}")]
         [HttpPut]
          public async Task<ActionResult> dodajKnjigu(string Ime, string Prezime, string Naslov)
         {
@@ -158,7 +158,7 @@ namespace WEBProjekat.Controllers
 
         }
 
-        [Route("Knjige autora/{Ime}/{Prezime}")]
+        [Route("Knjige_Autora/{Ime}/{Prezime}")]
         [HttpGet]
         public ActionResult  knjigeAutora(string Ime, string Prezime)
         {
@@ -169,6 +169,14 @@ namespace WEBProjekat.Controllers
             var knjige= autor.NapisaneKnjige.ToList(); // vraca sve podatke o knjigama.
 
             return Ok(knjige);
+        }
+
+        [Route("Svi_autori")]
+        [HttpGet]
+        public ActionResult sviAutori()
+        {
+            var autori = Context.Autori.Include(p => p.NapisaneKnjige);
+            return Ok(autori.ToList());
         }
 
     }

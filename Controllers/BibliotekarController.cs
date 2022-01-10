@@ -2,10 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Models;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace WEBProjekat.Controllers
 {
@@ -19,7 +18,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Zaposli bibliotekara/{brojKnjizice}/{ime}/{prezime}")]
+        [Route("Zaposli_bibliotekara/{brojKnjizice}/{ime}/{prezime}/{pol}/{smena}")]
         [HttpPost]
         public async Task<ActionResult> Zaposli_bibliotekara(int brojKnjizice,  string ime, string prezime, char pol, RadnoVreme smena)
         {
@@ -54,7 +53,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Pregledaj bibliotekara/{brojKnjizice}")]
+        [Route("Pregledaj_bibliotekara/{brojKnjizice}")]
         [HttpGet]
         public ActionResult VratiBibliotekara(int brojKnjizice)
         {
@@ -65,7 +64,7 @@ namespace WEBProjekat.Controllers
             return Ok(bibliotekar);
         }
 
-        [Route("Otpusti bibliotekara/{brojKnjizice}")]
+        [Route("Otpusti_bibliotekara/{brojKnjizice}")]
         [HttpDelete]
         public async Task<ActionResult> Otpusti_bibliotekara(int brojKnjizice)
         {
@@ -93,6 +92,14 @@ namespace WEBProjekat.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [Route("Svi_bibliotekari")]
+        [HttpGet]
+        public ActionResult sviBibliotekari()
+        {
+            var bibliotekari = Context.Bibliotekari.Include(p=>p.IzdateKnjige);
+            return Ok(bibliotekari.ToList());
         }
      
     }

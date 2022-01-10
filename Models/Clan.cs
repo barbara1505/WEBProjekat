@@ -28,7 +28,7 @@ namespace Models
         [JsonIgnore]
         public List<Iznajmljivanje> UzeteKnjige { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         [Required]
         public ClanskaKarta ClanskaKarta { get; set; }
     }

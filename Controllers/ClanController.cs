@@ -2,10 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Models;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace WEBProjekat.Controllers
 {
@@ -19,7 +18,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Upisi clana/{Ime}/{Prezime}/{Adresa}/{Telefon}")]
+        [Route("Upisi_clana/{Ime}/{Prezime}/{Adresa}/{Telefon}")]
         [HttpPost]
         public async Task<ActionResult> UpisClana(string Ime, string Prezime, string Adresa, string Telefon, int brojKarte )
         {
@@ -60,18 +59,18 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Podaci o clanu/{Ime}/{Prezime}")]
+        [Route("Podaci_clan/{Ime}/{Prezime}")]
         [HttpGet]
         public ActionResult VratiClana(string Ime, string Prezime)
         {
             if (string.IsNullOrEmpty(Ime)) return BadRequest("Neophodno je ime clana!");
             if (string.IsNullOrEmpty(Prezime)) return BadRequest("Neophodno je prezime clana!");
-            var clan = Context.Clanovi.Where(p => (p.Ime==Ime && p.Prezime==Prezime)).FirstOrDefault();
+            var clan = Context.Clanovi.Include(p=>p.ClanskaKarta).Where(p => (p.Ime==Ime && p.Prezime==Prezime)).FirstOrDefault();
 
             return Ok(clan);
         }
 
-        [Route("Ukloni clana/{Ime}/{Prezime}")]
+        [Route("Ukloni_clana/{Ime}/{Prezime}")]
         [HttpDelete]
         public async Task<ActionResult> UkloniAutora(string Ime, string Prezime)
         {
@@ -102,7 +101,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Promeni podatke o clanu/{Ime}/{Prezime}")]
+        [Route("Promeni_podatke_clan/{Ime}/{Prezime}")]
         [HttpPut]
         public async Task<ActionResult> UrediClana(string Ime, string Prezime, string noviBrojTelefona)
         {
@@ -129,6 +128,14 @@ namespace WEBProjekat.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+
+        [Route("Svi_clanovi")]
+        [HttpGet]
+        public ActionResult sviClanovi()
+        {
+            var clanovi = Context.Clanovi.Include(p=>p.ClanskaKarta).Include(p=>p.UzeteKnjige);
+            return Ok(clanovi.ToList());
         }
      
     }

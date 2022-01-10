@@ -17,7 +17,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Novo iznajmljivanje/{datum}/{bibliotekar}/{knjiga}/{clan}")]
+        [Route("Novo_iznajmljivanje/{datum}/{bibliotekar}/{knjiga}/{clan}")]
         [HttpPost]
 
         public async Task<ActionResult> NovoIznajmljivanje(DateTime datum, int bibliotekar, string knjiga, int clan)
@@ -67,7 +67,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Vracanje knjige/{Id}/{Datum}")]
+        [Route("Vracanje_knjige/{Id}/{Datum}")]
         [HttpPut]
          public async Task<ActionResult> VracanjeKnjige(int Id, DateTime Datum)
         {
@@ -93,6 +93,28 @@ namespace WEBProjekat.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+
+        [Route("Iznajmljivanja/{Id}")]
+        [HttpGet]
+        public ActionResult vratiIznajmljivanja(int Id)
+        {
+            var p = Context.Iznajmljivanje
+            .Include(p=>p.Knjiga)
+            .ThenInclude(p=>p.Autor)
+            .Include(p=>p.Clan)
+            .Include(p=>p.Bibliotekar)
+            .Where(p => (p.Id_iznajmljivanje==Id)).FirstOrDefault();
+
+            return Ok(p);
+        }
+        
+        [Route("Sva_iznajmljivanja")]
+        [HttpGet]
+        public ActionResult svaIznajmljivanja()
+        {
+            var pom = Context.Iznajmljivanje.Include(p=>p.Knjiga).ThenInclude(p=>p.Autor).Include(p=>p.Clan).ThenInclude(p=>p.ClanskaKarta).Include(p=>p.Bibliotekar);
+            return Ok(pom.ToList());
         }
         
     }

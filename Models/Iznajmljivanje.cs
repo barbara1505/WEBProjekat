@@ -18,13 +18,13 @@ namespace Models
 
         public DateTime? DatumVracanja { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public Bibliotekar Bibliotekar {get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public Clan Clan {get; set; }
 
-        [JsonIgnore]
+       //[JsonIgnore]
         public Knjiga Knjiga {get; set; }
     }
 }

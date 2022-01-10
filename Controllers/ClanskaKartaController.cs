@@ -2,10 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Models;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 namespace WEBProjekat.Controllers
 {
     [ApiController]
@@ -18,7 +17,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Dodeli clansku kartu/{brojKarte}/{tipKarte}/{VaziOd}/{VaziDo}")]
+        [Route("Dodeli_clansku_kartu/{brojKarte}/{tipKarte}/{VaziOd}/{VaziDo}")]
         [HttpPost]
         public async Task<ActionResult> DodeliKartu(int brojKarte,  TipKarte tipKarte, DateTime VaziOd, DateTime VaziDo)
         {
@@ -54,7 +53,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Uvid u clansku kartu/{brojKarte}")]
+        [Route("Uvid_karta/{brojKarte}")]
         [HttpGet]
         public ActionResult VratiKartu(int brojkarte)
         {
@@ -65,7 +64,7 @@ namespace WEBProjekat.Controllers
             return Ok(karta);
         }
 
-        [Route("Oduzmi clansku kartu/{brojkarte}")]
+        [Route("Oduzmi_clansku_kartu/{brojkarte}")]
         [HttpDelete]
         public async Task<ActionResult> OduzmiKartu(int brojkarte)
         {
@@ -97,7 +96,7 @@ namespace WEBProjekat.Controllers
             }
         }
 
-        [Route("Produzi clansku kartu/{brojkarte}")]
+        [Route("Produzi_clansku_kartu/{brojkarte}")]
         [HttpPut]
         public async Task<ActionResult> PromeniKartu(int brojkarte)
         {
@@ -125,6 +124,13 @@ namespace WEBProjekat.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+        [Route("Sve_karte")]
+        [HttpGet]
+        public ActionResult sveKarte()
+        {
+            var karte = Context.ClanskeKarte.ToList();
+            return Ok(karte);
         }
      
     }

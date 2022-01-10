@@ -20,7 +20,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Dodaj knjigu/{Naslov}/{BrojPrimeraka}/{BrojStrana}/{Zanr}")]
+        [Route("Dodaj_knjigu/{Naslov}/{BrojPrimeraka}/{BrojStrana}/{Zanr}")]
         [HttpPost]
         public async Task<ActionResult> DodajKnjigu(string Naslov, int BrojPrimeraka, int BrojStrana,TipKnjige Zanr, string imeAutora, string prezimeAutora )
         {
@@ -57,7 +57,7 @@ namespace WEBProjekat.Controllers
                 return BadRequest(e.InnerException.Message);
             }
         }
-        [Route("O knjizi/{Naslov}")]
+        [Route("O_knjizi/{Naslov}")]
         [HttpGet]
         public ActionResult VratiKnjigu(string Naslov)
         {
@@ -68,13 +68,21 @@ namespace WEBProjekat.Controllers
             return Ok(knjiga);
         }
 
-        [Route("Prikazi knjige odabranog zanra/{Zanr}")]
+        [Route("Prikazi_knjige_odabranog_zanra/{Zanr}")]
         [HttpGet]
         public async Task<ActionResult> vratiKnjigeZanr(TipKnjige Zanr)
         {
             var knjiga = await Context.Knjige.Where(p => (p.Zanr==Zanr)).ToListAsync();
 
             return Ok(knjiga);
+        }
+
+        [Route("Sve_knjige")]
+        [HttpGet]
+        public ActionResult sveKnjige()
+        {
+            var knjige = Context.Knjige.Include(p=>p.Autor);
+            return Ok(knjige.ToList());
         }
     }
 }
