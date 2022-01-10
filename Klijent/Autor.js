@@ -7,4 +7,27 @@ export class Autor
         this.godinaRodjenja=godRodjenja;
         this.godinaSmrti=godSmrti;
     }
+
+    crtaj(host) {
+
+        var tr = document.createElement("tr");
+        host.appendChild(tr);
+
+        var el = document.createElement("td");
+        el.innerHTML = this.ime;
+        tr.appendChild(el);
+
+        var el = document.createElement("td");
+        el.innerHTML = this.prezime;
+        tr.appendChild(el);
+
+        var el = document.createElement("td");
+        el.innerHTML = this.godinaRodjenja;
+        tr.appendChild(el);
+
+        var el = document.createElement("td");
+        el.innerHTML = this.godinaSmrti;
+        tr.appendChild(el);
+    }
+
 }

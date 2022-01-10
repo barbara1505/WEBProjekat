@@ -20,7 +20,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Dodaj_knjigu/{Naslov}/{BrojPrimeraka}/{BrojStrana}/{Zanr}")]
+        [Route("Dodaj_knjigu/{Naslov}/{BrojPrimeraka}/{BrojStrana}/{Zanr}/{imeAutora}/{prezimeAutora}")]
         [HttpPost]
         public async Task<ActionResult> DodajKnjigu(string Naslov, int BrojPrimeraka, int BrojStrana,TipKnjige Zanr, string imeAutora, string prezimeAutora )
         {
@@ -72,7 +72,8 @@ namespace WEBProjekat.Controllers
         [HttpGet]
         public async Task<ActionResult> vratiKnjigeZanr(TipKnjige Zanr)
         {
-            var knjiga = await Context.Knjige.Where(p => (p.Zanr==Zanr)).ToListAsync();
+            var knjiga = await Context.Knjige.Include(p=>p.Autor).Where(p => (p.Zanr==Zanr)).ToListAsync();
+        
 
             return Ok(knjiga);
         }

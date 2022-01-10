@@ -93,11 +93,11 @@ export class Biblioteka {
 
     crtajHeader(host, tekst) {
         var h = document.createElement("h2");
-        h.className="headerStil";
+        h.className = "headerStil";
         h.innerHTML = tekst;
         host.appendChild(h);
     }
-//#region bibliotekar
+    //#region bibliotekar
     prikaziBibliotekare(host) {
 
         this.removeAllChildNodes(host);
@@ -129,7 +129,7 @@ export class Biblioteka {
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Broj knjizice","Ime", "Prezime", "Pol", "Smena"];
+                    var zaglavlje = ["Broj knjizice", "Ime", "Prezime", "Pol", "Smena"];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
                         th.innerHTML = el;
@@ -154,8 +154,7 @@ export class Biblioteka {
                 })
             });
     }
-    crtajKontroleBibliotekar(host)
-    {
+    crtajKontroleBibliotekar(host) {
         this.removeAllChildNodes(host);
 
         var dugmelab = ["Zaposli bibliotekara", "Otpusti bibliotekara"];
@@ -215,7 +214,7 @@ export class Biblioteka {
                 let smena = ["Prepodne", "Popodne"];
 
                 let opcija;
-                var j=0;
+                var j = 0;
 
                 smena.forEach(s => {
 
@@ -227,7 +226,7 @@ export class Biblioteka {
 
                 divniz[i].appendChild(inputs[i]);
 
-            } 
+            }
             else {
                 inputs[i] = document.createElement("input");
                 inputs[i].setAttribute("type", "text");
@@ -257,9 +256,6 @@ export class Biblioteka {
             i++;
         })
         Dugmici[0].onclick = (ev) => {
-            // if (Inputs[0].value === "" || Inputs[1].value === "" || Inp.value === "" || inputKlub.value === "")
-            //   alert("Morate uneti podatke za Fide, Ime, Prezime i Klub!");
-
             this.dodajBibliotekara(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
         }
 
@@ -269,20 +265,20 @@ export class Biblioteka {
     dodajBibliotekara(brojKnjizice, Ime, Prezime, Pol, Smena) {
 
         fetch("https://localhost:5001/Bibliotekar/Zaposli_bibliotekara/" + brojKnjizice + "/" + Ime + "/" + Prezime + "/" + Pol + "/" + Smena,
-         {
-            method: 'POST',
-            body: JSON.stringify({
-                "brojKnjizice": brojKnjizice,
-                "ime": Ime,
-                "prezime": Prezime,
-                "pol": Pol,
-                "smena": Smena
-            })
-        }).then(Response => {
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "brojKnjizice": brojKnjizice,
+                    "ime": Ime,
+                    "prezime": Prezime,
+                    "pol": Pol,
+                    "smena": Smena
+                })
+            }).then(Response => {
 
-            let levaforma = this.container.querySelector(".levaForma");
-            this.prikaziBibliotekare(levaforma);
-        });
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziBibliotekare(levaforma);
+            });
     }
 
     crtajDijalogOtpusti(host) {
@@ -318,8 +314,7 @@ export class Biblioteka {
         Obrisi.className = "dugmeZaposliOdustani";
         Btns.appendChild(Obrisi);
 
-        Obrisi.onclick = (ev) => 
-        {
+        Obrisi.onclick = (ev) => {
             this.obrisiBibliotekara(host, inputKnjizica.value);
         }
 
@@ -333,8 +328,8 @@ export class Biblioteka {
 
     obrisiBibliotekara(host, brojKnjizice) {
         this.removeAllChildNodes(host);
-        
-        this.crtajHeader(host,"Otpusti bibliotekara");
+
+        this.crtajHeader(host, "Otpusti bibliotekara");
 
         fetch("https://localhost:5001/Bibliotekar/Otpusti_bibliotekara/" + brojKnjizice, {
             method: 'DELETE',
@@ -350,9 +345,7 @@ export class Biblioteka {
     //#endregion
 
     //#region knjiga
-
-    prikaziKnjige(host)
-    {
+    prikaziKnjige(host) {
         this.removeAllChildNodes(host);
 
         this.listaKnjiga = [];
@@ -382,7 +375,7 @@ export class Biblioteka {
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Naslov","Autor", "Zanr", "Broj primeraka", "Broj strana"];
+                    var zaglavlje = ["Naslov", "Autor", "Zanr", "Broj primeraka", "Broj strana"];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
                         th.innerHTML = el;
@@ -401,10 +394,598 @@ export class Biblioteka {
                     FormaKontrole.className = "FormaKontrole";
                     host.appendChild(FormaKontrole);
 
-                    this.crtajHeader(FormaKontrole, "Uredi");
-
-                    //this.crtajKontroleKnjiga(FormaKontrole);
+                    this.crtajKontroleKnjiga(FormaKontrole);
                 })
             });
+    }
+    crtajKontroleKnjiga(host) {
+        this.removeAllChildNodes(host);
+
+        var dugmelab = ["Dodaj knjigu", "Prikazi knjige odredjenog zanra"];
+        var dugmeniz = [];
+
+        dugmelab.forEach(d => {
+            var btn = document.createElement("button");
+            btn.innerHTML = d;
+            btn.className = "dugmiciKontrole";
+            dugmeniz.push(btn);
+            host.appendChild(btn);
+        })
+
+        dugmeniz[0].onclick = (ev) => this.crtajDijalogDodajKnjigu(host);
+        dugmeniz[1].onclick = (ev) => this.crtajDijalogPrikaziKnjigeZanr(host);
+    }
+
+    crtajDijalogDodajKnjigu(host) {
+
+        this.removeAllChildNodes(host);
+
+        this.crtajHeader(host, "Dodaj knjigu");
+
+        var i = 0;
+        var polja = ["Naslov", "Ime autora", "Prezime autora", "Zanr", "Broj primeraka", "Broj strana"];
+
+        var naslov, ime, prezime, zanr, brp, brs;
+        var divniz = [naslov, ime, prezime, zanr, brp, brs];
+
+        var lbnaslov, lbime, lbprezime, lbzanr, lbbrp, lbbrs;
+        var labeleTekst = ["Naslov:", "Ime autora:", "Prezime autora:", "Zanr:", "Broj primeraka:", "Broj strana:"];
+        var labele = [lbnaslov, lbime, lbprezime, lbzanr, lbbrp, lbbrs];
+
+        var inpnaslov, inpime, inpprezime, inpzanr, inpbrp, inpbrs;
+        var inputs = [inpnaslov, inpime, inpprezime, inpzanr, inpbrp, inpbrs];
+
+        var poljeKontrole = document.createElement("div");
+        poljeKontrole.className = "knjigeKontrole";
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            divniz[i].className = "knjigeKontrole";
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            if (i === 3) {
+
+                inputs[i] = document.createElement("select");
+                inputs[i].className = "labeleKontrole";
+
+                let smena = ["Za decu", "Lektira", "Price", "Poezija", "Roman"];
+
+                let opcija;
+                var j = 0;
+
+                smena.forEach(s => {
+
+                    opcija = document.createElement("option");
+                    opcija.innerHTML = s;
+                    opcija.value = j++;
+                    inputs[i].appendChild(opcija);
+                })
+
+                divniz[i].appendChild(inputs[i]);
+
+            }
+            else {
+                inputs[i] = document.createElement("input");
+                inputs[i].setAttribute("type", "text");
+                inputs[i].className = "InputKontrole";
+                divniz[i].appendChild(inputs[i]);
+            }
+
+            i++;
+        })
+
+        var Btns = document.createElement("div");
+        Btns.className = "Meni";
+        host.appendChild(Btns);
+
+        var Dodaj, Odustani;
+        var Dugmici = [Dodaj, Odustani];
+        var DugmiciLabele = ["Dodaj knjigu", "Odustani"];
+
+        var i = 0;
+
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => {
+            this.dodajKnjigu(inputs[0].value, inputs[3].value, inputs[4].value, inputs[5].value, inputs[1].value, inputs[2].value);
+        }
+
+        Dugmici[1].onclick = (ev) => this.crtajKontroleKnjiga(host);
+    }
+
+    dodajKnjigu(naslov, zanr, brp, brs, ime, prezime) {
+
+        fetch("https://localhost:5001/Knjiga/Dodaj_knjigu/" + naslov + "/" + brp + "/" + brs + "/" + zanr + "/" + ime + "/" + prezime,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "Naslov": naslov,
+                    "BrojPrimeraka": brp,
+                    "BrojStrana": brs,
+                    "Zanr": zanr,
+                    "imeAutora": ime,
+                    "prezimeAutora": prezime
+                })
+            }).then(Response => {
+
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziKnjige(levaforma);
+            });
+    }
+
+    crtajDijalogPrikaziKnjigeZanr(host) {
+        this.removeAllChildNodes(host);
+
+        this.crtajHeader(host, "Prikazi knjige odabranog zanra");
+
+        var poljeKontrole = document.createElement("div");
+        poljeKontrole.className = "knjigaKontrole";
+        host.appendChild(poljeKontrole);
+
+
+        var zanr = document.createElement("div");
+        zanr.className = "knjigaKontrole";
+        poljeKontrole.appendChild(zanr);
+
+        var lblzanr = document.createElement("label");
+        lblzanr.className = "labeleKontrole";
+        lblzanr.innerHTML = "Zanr:";
+        zanr.appendChild(lblzanr);
+
+        var input = document.createElement("select");
+        input.className = "labeleKontrole";
+
+        let tip = ["Za decu", "Lektira", "Price", "Poezija", "Roman"];
+
+        let opcija;
+        var j = 0;
+
+        tip.forEach(s => {
+
+            opcija = document.createElement("option");
+            opcija.innerHTML = s;
+            opcija.value = j++;
+            input.appendChild(opcija);
+        })
+
+        zanr.appendChild(input);
+
+        var Btns = document.createElement("div");
+        Btns.className = "Meni";
+        host.appendChild(Btns);
+
+        var prikazi = document.createElement("button");
+        prikazi.innerHTML = "Prikazi";
+        prikazi.className = "dugmeZaposliOdustani";
+        Btns.appendChild(prikazi);
+
+        prikazi.onclick = (ev) => {
+            this.prikaziKnjigeZanr(host, input.value);
+        }
+
+        var Odustani = document.createElement("button");
+        Odustani.innerHTML = "Odustani";
+        Odustani.className = "dugmeZaposliOdustani"
+        Btns.appendChild(Odustani);
+
+        Odustani.onclick = (ev) => this.crtajKontroleKnjiga(host);
+    }
+
+    prikaziKnjigeZanr(host, zanr) {
+
+        this.removeAllChildNodes(host);
+
+        this.listaKnjiga = [];
+
+        fetch("https://localhost:5001/Knjiga/Prikazi_knjige_odabranog_zanra/" + zanr)
+            .then(p => {
+                p.json().then(knjige => {
+                    knjige.forEach(K => {
+                        console.log(K);
+                        var knjiga = new Knjiga(K.naslov, K.autor, K.zanr, K.brojPrimeraka, K.brojStrana);
+                        this.listaKnjiga.push(knjiga);
+                    });
+
+                    let forma = document.createElement("div");
+                    forma.className = "zaPrikaz";
+                    host.appendChild(forma);
+
+                    this.crtajHeader(forma, "Lista knjiga");
+
+                    var knjigeTabela = document.createElement("table");
+                    knjigeTabela.className = "tabelaKnjige";
+                    forma.append(knjigeTabela);
+
+                    var tabelaheader = document.createElement("thead");
+                    knjigeTabela.appendChild(tabelaheader);
+
+                    var tr = document.createElement("tr");
+                    tabelaheader.appendChild(tr);
+
+                    let th;
+                    var zaglavlje = ["Naslov", "Autor", "Zanr", "Broj primeraka", "Broj strana"];
+                    zaglavlje.forEach(el => {
+                        th = document.createElement("th");
+                        th.innerHTML = el;
+                        tr.appendChild(th);
+                    })
+                    var tabelabody = document.createElement("tbody");
+                    tabelabody.className = "knjigePodaci";
+                    knjigeTabela.appendChild(tabelabody);
+
+                    this.listaKnjiga.forEach(K => {
+                        K.crtaj(knjigeTabela);
+                    })
+                });
+            }
+            )
+    }
+    //#endregion
+
+    //#region Autor
+
+    prikaziAutore(host) {
+        this.removeAllChildNodes(host);
+
+        this.listaAutora = [];
+
+        fetch("https://localhost:5001/Autor/Svi_autori")
+            .then(p => {
+                p.json().then(autori => {
+                    autori.forEach(A => {
+                        var autor = new Autor(A.ime, A.prezime, A.godinaRodjenja, A.godinaSmrti);
+                        this.listaAutora.push(autor);
+                    });
+
+                    let forma = document.createElement("div");
+                    forma.className = "zaPrikaz";
+                    host.appendChild(forma);
+
+                    this.crtajHeader(forma, "Lista autora");
+
+                    var autoriTabela = document.createElement("table");
+                    autoriTabela.className = "tabelaAutori";
+                    forma.append(autoriTabela);
+
+                    var tabelaheader = document.createElement("thead");
+                    autoriTabela.appendChild(tabelaheader);
+
+                    var tr = document.createElement("tr");
+                    tabelaheader.appendChild(tr);
+
+                    let th;
+                    var zaglavlje = ["Ime", "Prezime", "Godina rodjenja", "Godina smrti"];
+                    zaglavlje.forEach(el => {
+                        th = document.createElement("th");
+                        th.innerHTML = el;
+                        tr.appendChild(th);
+                    })
+                    var tabelabody = document.createElement("tbody");
+                    tabelabody.className = "autoriPodaci";
+                    autoriTabela.appendChild(tabelabody);
+
+                    this.listaAutora.forEach(A => {
+                        A.crtaj(autoriTabela);
+                    })
+
+                    let FormaKontrole = document.createElement("div");
+                    FormaKontrole.className = "FormaKontrole";
+                    host.appendChild(FormaKontrole);
+
+                    this.crtajKontroleAutor(FormaKontrole);
+                })
+            });
+    }
+
+    crtajKontroleAutor(host) {
+        this.removeAllChildNodes(host);
+
+        var rblab = ["Dodaj autora", "Dodaj knjigu autoru", "Prikazi sve knjige autora"];
+        var rbniz = [];
+        var i = 1;
+
+        var novidiv;
+
+
+        rblab.forEach(d => {
+
+            novidiv = document.createElement("div");
+            novidiv.className = "rbStil";
+
+            var rblbl = document.createElement("label");
+            rblbl.innerHTML = d;
+            novidiv.appendChild(rblbl);
+
+            var rb = document.createElement("input");
+            rb.type = "radio";
+            rb.value = i++;
+            rb.name = "rbName";
+
+            novidiv.appendChild(rb);
+
+            rbniz.push(rb);
+            host.appendChild(novidiv);
+        })
+
+        rbniz[0].onclick = (ev) => this.crtajDijalogDodajAutora(host);
+        rbniz[1].onclick = (ev) => this.crtajDijalogDodajKnjiguAutoru(host);
+        rbniz[2].onclick = (ev) => this.crtajDijalogPrikaziKnjigeAutora(host);
+    }
+
+    crtajDijalogDodajKnjiguAutoru(host) {
+        this.removeAllChildNodes(host);
+        this.crtajHeader(host, "Dodaj knjigu autoru");
+
+        var i = 0;
+        var polja = ["Ime", "Prezime", "Knjiga"];
+
+        var ime, prezime, knjiga;
+        var divniz = [ime, prezime, knjiga];
+
+        var lbime, lbprezime, lbknjiga;
+        var labeleTekst = ["Ime:", "Prezime:", "Knjiga:"];
+        var labele = [lbime, lbprezime, lbknjiga];
+
+        var inpime, inpprezime, inpknjiga
+        var inputs = [inpime, inpprezime, inpknjiga];
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            inputs[i] = document.createElement("input");
+            inputs[i].setAttribute("type", "text");
+            inputs[i].className = "InputKontrole";
+            divniz[i].appendChild(inputs[i]);
+
+            i++;
+
+        })
+        var Btns = document.createElement("div");
+        Btns.className = "Meni";
+        host.appendChild(Btns);
+
+        var Dodaj, Odustani;
+        var Dugmici = [Dodaj, Odustani];
+        var DugmiciLabele = ["Dodaj knjigu autoru", "Odustani"];
+
+        var i = 0;
+
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => 
+            this.dodajKnjiguAutoru(inputs[0].value, inputs[1].value, inputs[2].value);
+        Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
+
+    }
+    dodajKnjiguAutoru(ime, prezime, naslov) {
+        fetch("https://localhost:5001/Autor/Dodaj_Knjigu_Autoru/" + ime + "/" + prezime + "/" + naslov,
+            {
+                method: 'PUT',
+                body: JSON.stringify({
+                    "Ime": ime,
+                    "Prezime": prezime,
+                    "Naslov": naslov,
+
+                })
+            }).then(Response => {
+
+                console.log("Uspesno dodata knjiga");
+
+            });
+    }
+    crtajDijalogDodajAutora(host) {
+        this.removeAllChildNodes(host);
+        this.crtajHeader(host, "Dodaj autora");
+
+        var i = 0;
+        var polja = ["Ime", "Prezime", "Godina rodjenja", "Godina smrti"];
+
+        var ime, prezime, godR, godS;
+        var divniz = [ime, prezime, godR, godS];
+
+        var lbime, lbprezime, lbgodR, lbgodS;
+        var labeleTekst = ["Ime:", "Prezime:", "Godina rodjenja:", "Godina smrti:"];
+        var labele = [lbime, lbprezime, lbgodR, lbgodS];
+
+        var inpime, inpprezime, inpgodR, inpgodS;
+        var inputs = [inpime, inpprezime, inpgodR, inpgodS];
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            inputs[i] = document.createElement("input");
+            inputs[i].setAttribute("type", "text");
+            inputs[i].className = "InputKontrole";
+            divniz[i].appendChild(inputs[i]);
+
+            i++;
+
+        })
+        var Btns = document.createElement("div");
+        Btns.className = "Meni";
+        host.appendChild(Btns);
+
+        var Dodaj, Odustani;
+        var Dugmici = [Dodaj, Odustani];
+        var DugmiciLabele = ["Dodaj autora", "Odustani"];
+
+        var i = 0;
+
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => 
+            this.dodajAutora(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+        Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
+    }
+
+    dodajAutora(ime, prezime, godinaRodjenja, godinaSmrti) {
+
+            fetch("https://localhost:5001/Autor/Dodaj_Autora/" + ime + "/" + prezime + "/" + godinaRodjenja + "/" + godinaSmrti,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "ime": ime,
+                    "prezime": prezime,
+                    "godina_rodjenja": godinaRodjenja,
+                    "godina_smrti": godinaSmrti,
+                })
+            }).then(Response => {
+
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziAutore(levaforma);
+            });
+    }
+
+    crtajDijalogPrikaziKnjigeAutora(host) 
+    { 
+        this.removeAllChildNodes(host);
+        this.crtajHeader(host, "Odaberite autora");
+
+        var i = 0;
+        var polja = ["Ime", "Prezime"];
+
+        var ime, prezime;
+        var divniz = [ime, prezime];
+
+        var lbime, lbprezime;
+        var labeleTekst = ["Ime:", "Prezime:"];
+        var labele = [lbime, lbprezime];
+
+        var inpime, inpprezime;
+        var inputs = [inpime, inpprezime];
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            inputs[i] = document.createElement("input");
+            inputs[i].setAttribute("type", "text");
+            inputs[i].className = "InputKontrole";
+            divniz[i].appendChild(inputs[i]);
+            i++;
+        })
+        var Btns = document.createElement("div");
+        Btns.className = "Meni";
+        host.appendChild(Btns);
+
+        var Primeni, Odustani;
+        var Dugmici = [Primeni, Odustani];
+        var DugmiciLabele = ["Primeni", "Odustani"];
+
+        var i = 0;
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => 
+            this.prikaziKnjigeAutora(host,inputs[0].value, inputs[1].value);
+        Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
+    }
+
+    prikaziKnjigeAutora(host, ime, prezime)
+    {
+        this.removeAllChildNodes(host);
+
+        this.listaKnjiga = [];
+
+        fetch("https://localhost:5001/Autor/Knjige_Autora/" + ime +"/" +prezime)
+            .then(p => {
+                p.json().then(knjige => {
+                    knjige.forEach(K => {
+                        console.log(K);
+                        var knjiga = new Knjiga(K.naslov, K.autor, K.zanr, K.brojPrimeraka, K.brojStrana);
+                        this.listaKnjiga.push(knjiga);
+                    });
+
+                    let forma = document.createElement("div");
+                    forma.className = "zaPrikaz";
+                    host.appendChild(forma);
+
+                    this.crtajHeader(forma, "Lista knjiga odabranog autora");
+
+                    var knjigeTabela = document.createElement("table");
+                    knjigeTabela.className = "tabelaKnjige";
+                    forma.append(knjigeTabela);
+
+                    var tabelaheader = document.createElement("thead");
+                    knjigeTabela.appendChild(tabelaheader);
+
+                    var tr = document.createElement("tr");
+                    tabelaheader.appendChild(tr);
+
+                    let th;
+                    var zaglavlje = ["Naslov", "Autor", "Zanr", "Broj primeraka", "Broj strana"];
+                    zaglavlje.forEach(el => {
+                        th = document.createElement("th");
+                        th.innerHTML = el;
+                        tr.appendChild(th);
+                    })
+                    var tabelabody = document.createElement("tbody");
+                    tabelabody.className = "knjigePodaci";
+                    knjigeTabela.appendChild(tabelabody);
+
+                    this.listaKnjiga.forEach(K => {
+                        K.crtaj(knjigeTabela);
+                    })
+                });
+            }
+            )
     }
 }
