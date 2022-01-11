@@ -72,7 +72,7 @@ namespace WEBProjekat.Controllers
 
         [Route("Ukloni_clana/{Ime}/{Prezime}")]
         [HttpDelete]
-        public async Task<ActionResult> UkloniAutora(string Ime, string Prezime)
+        public async Task<ActionResult> UkloniClana(string Ime, string Prezime)
         {
             if (string.IsNullOrEmpty(Ime)) return BadRequest("Neophodno je ime clana!");
             if (string.IsNullOrEmpty(Prezime)) return BadRequest("Neophodno je prezime clana!");
@@ -97,11 +97,11 @@ namespace WEBProjekat.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(e.InnerException.Message);
             }
         }
 
-        [Route("Promeni_podatke_clan/{Ime}/{Prezime}")]
+        [Route("Promeni_podatke_clan/{Ime}/{Prezime}/{noviBrojTelefona}")]
         [HttpPut]
         public async Task<ActionResult> UrediClana(string Ime, string Prezime, string noviBrojTelefona)
         {

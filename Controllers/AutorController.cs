@@ -178,6 +178,5 @@ namespace WEBProjekat.Controllers
             var autori = Context.Autori.Include(p => p.NapisaneKnjige);
             return Ok(autori.ToList());
         }
-
     }
 }

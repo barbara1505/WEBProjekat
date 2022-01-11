@@ -14,23 +14,24 @@ export class Knjiga
         var tr = document.createElement("tr");
         host.appendChild(tr);
 
-        var el = document.createElement("td");
+        var el;
+        el = document.createElement("td");
         el.innerHTML = this.naslov;
         tr.appendChild(el);
 
-        var el = document.createElement("td");
+        el = document.createElement("td");
         el.innerHTML = this.autor.ime +" "+ this.autor.prezime;
         tr.appendChild(el);
 
-        var el = document.createElement("td");
+        el = document.createElement("td");
         el.innerHTML = this.zanr;
         tr.appendChild(el);
 
-        var el = document.createElement("td");
+        el = document.createElement("td");
         el.innerHTML = this.brojPrimeraka;
         tr.appendChild(el);
 
-        var el = document.createElement("td");
+        el = document.createElement("td");
         el.innerHTML = this.brojStrana;
         tr.appendChild(el);
       

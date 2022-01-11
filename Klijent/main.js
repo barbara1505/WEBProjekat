@@ -120,6 +120,7 @@ fetch("https://localhost:5001/Autor/Svi_autori")
                     })
             })
     })
+
+
 var biblioteka=new Biblioteka("Biblioteka Pirot",listaAutora,listaBibliotekara,listaKnjiga,listaClanova,listaKarte,listaIznajmljivanja);
 biblioteka.crtaj(document.body);
-//console.log(biblioteka);

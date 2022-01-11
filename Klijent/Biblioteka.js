@@ -5,8 +5,10 @@ import { Knjiga } from "./Knjiga.js";
 import { ClanskaKarta } from "./ClanskaKarta.js"
 import { Iznajmljivanje } from "./Iznajmljivanje.js"
 
-export class Biblioteka {
-    constructor(naziv, listaAutora, listaBibliotekara, listaKnjiga, listaClanova, listaKarte, listaIznajmljivanja) {
+export class Biblioteka 
+{
+    constructor(naziv, listaAutora, listaBibliotekara, listaKnjiga, listaClanova, listaKarte, listaIznajmljivanja) 
+    {
         this.naziv = naziv;
         this.listaAutora = listaAutora;
         this.listaBibliotekara = listaBibliotekara;
@@ -24,7 +26,7 @@ export class Biblioteka {
         host.appendChild(this.container);
 
         let zaglavlje = document.createElement("div");
-        zaglavlje.className = "ZaglavljeStil";
+        zaglavlje.className = "zaglavljeStil";
         this.container.appendChild(zaglavlje);
 
         let img = document.createElement("img");
@@ -36,13 +38,13 @@ export class Biblioteka {
 
 
         let naslov = document.createElement("h2");
-        naslov.className = "NaslovStil";
+        naslov.className = "naslovStil";
         naslov.innerHTML = "Biblioteka Pirot";
         zaglavlje.appendChild(naslov);
 
 
         let naslovlab = document.createElement("h2");
-        naslovlab.className = "NaslovLabStil";
+        naslovlab.className = "naslovLabStil";
         naslovlab.innerHTML = "Upravljanje poslovanjem";
         zaglavlje.appendChild(naslovlab);
 
@@ -689,7 +691,6 @@ export class Biblioteka {
                 })
             });
     }
-
     crtajKontroleAutor(host) {
         this.removeAllChildNodes(host);
 
@@ -802,6 +803,7 @@ export class Biblioteka {
 
             });
     }
+
     crtajDijalogDodajAutora(host) {
         this.removeAllChildNodes(host);
         this.crtajHeader(host, "Dodaj autora");
@@ -862,7 +864,6 @@ export class Biblioteka {
             this.dodajAutora(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
         Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
     }
-
     dodajAutora(ime, prezime, godinaRodjenja, godinaSmrti) {
 
             fetch("https://localhost:5001/Autor/Dodaj_Autora/" + ime + "/" + prezime + "/" + godinaRodjenja + "/" + godinaSmrti,
@@ -938,7 +939,6 @@ export class Biblioteka {
             this.prikaziKnjigeAutora(host,inputs[0].value, inputs[1].value);
         Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
     }
-
     prikaziKnjigeAutora(host, ime, prezime)
     {
         this.removeAllChildNodes(host);
@@ -988,4 +988,583 @@ export class Biblioteka {
             }
             )
     }
+    //#endregion
+
+    //#region Clan
+
+    prikaziClanove(host)
+    {
+        this.removeAllChildNodes(host);
+
+        this.listaClanova = [];
+
+        fetch("https://localhost:5001/Clan/Svi_clanovi")
+            .then(p => {
+                p.json().then(clanovi => {
+                    clanovi.forEach(A => {
+                        var clan = new Clan(A.ime, A.prezime, A.adresa, A.telefon, A.clanskaKarta);
+                        this.listaClanova.push(clan);
+                    });
+
+                    let forma = document.createElement("div");
+                    forma.className = "zaPrikaz";
+                    host.appendChild(forma);
+
+                    this.crtajHeader(forma, "Lista clanova");
+
+                    var clanoviTabela = document.createElement("table");
+                    clanoviTabela.className = "tabelaClanovi";
+                    forma.append(clanoviTabela);
+
+                    var tabelaheader = document.createElement("thead");
+                    clanoviTabela.appendChild(tabelaheader);
+
+                    var tr = document.createElement("tr");
+                    tabelaheader.appendChild(tr);
+
+                    let th;
+                    var zaglavlje = ["Ime", "Prezime", "Adresa", "Broj telefona","Broj clanske karte"];
+                    zaglavlje.forEach(el => {
+                        th = document.createElement("th");
+                        th.innerHTML = el;
+                        tr.appendChild(th);
+                    })
+                    var tabelabody = document.createElement("tbody");
+                    tabelabody.className = "clanoviPodaci";
+                    clanoviTabela.appendChild(tabelabody);
+
+                    this.listaClanova.forEach(A => {
+                        A.crtaj(clanoviTabela);
+                    })
+
+                    let FormaKontrole = document.createElement("div");
+                    FormaKontrole.className = "FormaKontrole";
+                    host.appendChild(FormaKontrole);
+
+                    this.crtajKontroleClan(FormaKontrole);
+                })
+            });
+    }
+    crtajKontroleClan(host)
+    {
+        this.removeAllChildNodes(host);
+
+        var rblab = ["Dodaj clana", "Ukloni clana", "Izmeni podatke o clanu"];
+        var rbniz = [];
+        var i = 1;
+
+        var novidiv;
+
+        rblab.forEach(d => {
+
+            novidiv = document.createElement("div");
+            novidiv.className = "rbStil";
+
+            var rblbl = document.createElement("label");
+            rblbl.innerHTML = d;
+            novidiv.appendChild(rblbl);
+
+            var rb = document.createElement("input");
+            rb.type = "radio";
+            rb.value = i++;
+            rb.name = "rbName";
+
+            novidiv.appendChild(rb);
+
+            rbniz.push(rb);
+            host.appendChild(novidiv);
+        })
+
+        rbniz[0].onclick = (ev) => this.crtajDijalogDodajClana(host);
+        rbniz[1].onclick = (ev) => this.crtajDijalogUkloniClana(host);
+        rbniz[2].onclick = (ev) => this.crtajDijalogIzmeniClana(host);
+    }
+
+    crtajDijalogDodajClana(host)
+    {
+        this.removeAllChildNodes(host);
+        this.crtajHeader(host, "Dodaj clana");
+
+        var i = 0;
+        var polja = ["Ime", "Prezime", "Adresa", "Telefon","Broj clanske karte"];
+
+        var ime, prezime, adr, tel, brk;
+        var divniz = [ime, prezime, adr, tel, brk];
+
+        var lbime, lbprezime, lbadr, lbtel, lbbrk;
+        var labeleTekst = ["Ime:", "Prezime:", "Adresa:", "Telefon:","Broj clanske karte:"];
+        var labele = [lbime, lbprezime, lbadr, lbtel, lbbrk];
+
+        var inpime, inpprezime, inpadr, inptel, inpbrk;
+        var inputs = [inpime, inpprezime, inpadr, inptel, inpbrk];
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            inputs[i] = document.createElement("input");
+            inputs[i].setAttribute("type", "text");
+            inputs[i].className = "InputKontrole";
+            divniz[i].appendChild(inputs[i]);
+
+            i++;
+
+        })
+        var Btns = document.createElement("div");
+        Btns.className = "Meni";
+        host.appendChild(Btns);
+
+        var Dodaj, Odustani;
+        var Dugmici = [Dodaj, Odustani];
+        var DugmiciLabele = ["Dodaj clana", "Odustani"];
+
+        var i = 0;
+
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => 
+            this.dodajAutora(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
+        Dugmici[1].onclick = (ev) => this.crtajKontroleClan(host);
+    }
+    dodajClana(Ime, Prezime, Adresa, Telefon, brojkarte)
+    {
+        fetch("https://localhost:5001/Clan/Upisi_clana/" + Ime + "/" + Prezime + "/" + Adresa + "/" + Telefon+"/"+ brojKarte,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                "Ime": Ime,
+                "Prezime": Prezime,
+                "Adresa": Adresa,
+                "Telefon": Telefon,
+                "brojKarte":brojkarte
+            })
+        }).then(Response => {
+
+            let levaforma = this.container.querySelector(".levaForma");
+            this.prikaziClanove(levaforma);
+        });
+    }
+
+    crtajDijalogUkloniClana(host)
+    {
+        this.removeAllChildNodes(host);
+
+        this.crtajHeader(host, "Ukloni clana");
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        var divime = document.createElement("div");
+        var divprezime = document.createElement("div");
+        poljeKontrole.appendChild(divime);
+        poljeKontrole.appendChild(divprezime);
+
+        var lbime = document.createElement("label");
+        var lbprezime = document.createElement("label");
+        lbime.innerHTML = "Ime:";
+        lbprezime.innerHTML="Prezime:";
+
+        divime.appendChild(lbime);
+        divprezime.appendChild(lbprezime);
+
+        var inputIme = document.createElement("input");
+        var inputPrezime = document.createElement("input");
+        inputIme.setAttribute("type", "text");
+        inputPrezime.setAttribute("type", "text");
+        divime.appendChild(inputIme);
+        divprezime.appendChild(inputPrezime);
+
+
+        var Btns = document.createElement("div");
+        host.appendChild(Btns);
+
+        var Obrisi = document.createElement("button");
+        Obrisi.innerHTML = "Ukloni";
+        Obrisi.className = "dugmeZaposliOdustani";
+        Btns.appendChild(Obrisi);
+
+        Obrisi.onclick = (ev) => {
+            this.ukloniClana(host, inputIme.value, inputPrezime.value);
+        }
+
+        var Odustani = document.createElement("button");
+        Odustani.innerHTML = "Odustani";
+        Odustani.className = "dugmeZaposliOdustani"
+        Btns.appendChild(Odustani);
+
+        Odustani.onclick = (ev) => this.crtajKontroleClan(host);
+    }
+    
+    ukloniClana(host, Ime, Prezime)
+    {
+        this.removeAllChildNodes(host);
+
+        fetch("https://localhost:5001/Clan/Ukloni_clana/"+ Ime + "/" + Prezime, 
+        {
+            method: 'DELETE',
+            body: JSON.stringify({
+                "Ime": Ime,
+                "Prezime":Prezime
+            })
+        }).then(Response => {
+
+            let levaforma = this.container.querySelector(".levaForma");
+            this.prikaziClanove(levaforma);
+        });
+    }
+
+    crtajDijalogIzmeniClana(host)
+    {
+        this.removeAllChildNodes(host);
+
+        this.crtajHeader(host, "Izmeni podatke o clanu:");
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        var ime = document.createElement("div");
+        poljeKontrole.appendChild(ime);
+
+        var prezime = document.createElement("div");
+        poljeKontrole.appendChild(prezime);
+
+        var br = document.createElement("div");
+        poljeKontrole.appendChild(br);
+
+        var lbime = document.createElement("label");
+        lbime.className = "labeleKontrole";
+        lbime.innerHTML = "Ime:";
+        ime.appendChild(lbime);
+
+        var lbprezime = document.createElement("label");
+        lbprezime.className = "labeleKontrole";
+        lbprezime.innerHTML = "Prezime:";
+        prezime.appendChild(lbprezime);
+
+        var lbbr = document.createElement("label");
+        lbbr.className = "labeleKontrole";
+        lbbr.innerHTML = "Novi broj telefona:";
+        br.appendChild(lbbr);
+
+        var inputIme = document.createElement("input");
+        inputIme.type="text";
+        var inputPrezime = document.createElement("input");
+        inputPrezime.type="text";
+        var inputBr = document.createElement("input");
+        inputBr.type="text";
+    
+        ime.appendChild(inputIme);
+        prezime.appendChild(inputPrezime);
+        br.appendChild(inputBr);
+
+        var Btns = document.createElement("div");
+        host.appendChild(Btns);
+
+        var Izmeni = document.createElement("button");
+        Izmeni.innerHTML = "Izmeni";
+        Izmeni.className = "dugmeZaposliOdustani";
+        Btns.appendChild(Izmeni);
+
+        Izmeni.onclick = (ev) => {
+            this.izmeniPodatkeClan(inputIme.value, inputPrezime.value, inputBr.value);
+        }
+        var Odustani = document.createElement("button");
+        Odustani.innerHTML = "Odustani";
+        Odustani.className = "dugmeZaposliOdustani"
+        Btns.appendChild(Odustani);
+
+        Odustani.onclick = (ev) => this.crtajKontroleClan(host);
+    }
+    izmeniPodatkeClan(ime, prezime, novibroj)
+    {
+        fetch("https://localhost:5001/Clan/Promeni_podatke_clan/" + ime + "/" + prezime + "/" + novibroj,
+            {
+                method: 'PUT',
+                body: JSON.stringify({
+                    "Ime": ime,
+                    "Prezime": prezime,
+                    "noviBrojTelefona": novibroj,
+
+                })
+            }).then(Response => {
+
+                console.log("Uspesno promenjen podatak");
+
+                let levaforma = document.querySelector(".levaForma");
+                this.prikaziClanove(levaforma);
+
+            });
+    }
+
+    //#endregion 
+
+    //#region Clanska karta
+    prikaziClanskeKarte(host)
+    {
+        this.removeAllChildNodes(host);
+
+        this.listaKarte = [];
+
+        fetch("https://localhost:5001/ClanskaKarta/Sve_karte")
+            .then(p => {
+                p.json().then(karte => {
+                    karte.forEach(A => {
+                        console.log(A);
+                        var karta = new ClanskaKarta(A.brojKarte, A.tip, A.clanarina, A.datumIzdavanja, A.datumVazenja);
+                        this.listaKarte.push(karta);
+                    });
+
+                    let forma = document.createElement("div");
+                    forma.className = "zaPrikaz";
+                    host.appendChild(forma);
+
+                    this.crtajHeader(forma, "Clanske karte");
+
+                    var karteTabela = document.createElement("table");
+                    karteTabela.className = "tabelaKarte";
+                    forma.append(karteTabela);
+
+                    var tabelaheader = document.createElement("thead");
+                    karteTabela.appendChild(tabelaheader);
+
+                    var tr = document.createElement("tr");
+                    tabelaheader.appendChild(tr);
+
+                    let th;
+                    var zaglavlje = ["Broj clanske karte", "Tip", "Clanarina","Datum izdavanja","Datum vazenja"];
+                    zaglavlje.forEach(el => {
+                        th = document.createElement("th");
+                        th.innerHTML = el;
+                        tr.appendChild(th);
+                    })
+                    var tabelabody = document.createElement("tbody");
+                    tabelabody.className = "kartePodaci";
+                    karteTabela.appendChild(tabelabody);
+
+                    this.listaKarte.forEach(A => {
+                        A.crtaj(karteTabela);
+                    })
+
+                    let FormaKontrole = document.createElement("div");
+                    FormaKontrole.className = "FormaKontrole";
+                    host.appendChild(FormaKontrole);
+
+                    this.crtajKontroleKarta(FormaKontrole);
+                })
+            });
+    }
+    crtajKontroleKarta(host)
+    {
+        this.removeAllChildNodes(host);
+
+        var dugmelab = ["Napravi clansku kartu", "Ukloni clansku kartu","Izmeni clansku kartu"];
+        var dugmeniz = [];
+
+        dugmelab.forEach(d => {
+            var btn = document.createElement("button");
+            btn.innerHTML = d;
+            btn.className = "dugmiciKontrole";
+            dugmeniz.push(btn);
+            host.appendChild(btn);
+        })
+
+        dugmeniz[0].onclick = (ev) => this.crtajDijalogDodajKartu(host);
+        dugmeniz[1].onclick = (ev) => this.crtajDijalogObrisiKartu(host);
+        dugmeniz[2].onclick = (ev) => this.crtajDijalogIzmeniKartu(host);
+    }
+
+    crtajDijalogDodajKartu(host)
+    {
+        this.removeAllChildNodes(host);
+        this.crtajHeader(host, "Dodaj clansku kartu");
+
+        var i = 0;
+        var polja = ["Broj karte", "Tip", "Datum izdavanja","Datum vazenja"];
+
+        var brk,tip,datizd,datvaz;
+        var divniz = [brk,tip,datizd,datvaz];
+
+        var lbbrk, lbtip, lbdatizd, lbdatvaz;
+        var labeleTekst = ["Broj karte:", "Tip:", "Datum izdavanja:","Datum vazenja:"];
+        var labele = [lbbrk, lbtip, lbdatizd, lbdatvaz];
+
+        var inpbrk,inptip,inpdatiz,inpdatvaz;
+        var inputs = [inpbrk,inptip,inpdatiz,inpdatvaz];
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            inputs[i] = document.createElement("input");
+            inputs[i].type="text";
+            inputs[i].className = "InputKontrole";
+            divniz[i].appendChild(inputs[i]);
+
+            i++;
+        })
+        var Btns = document.createElement("div");
+        host.appendChild(Btns);
+
+        var Dodaj, Odustani;
+        var Dugmici = [Dodaj, Odustani];
+        var DugmiciLabele = ["Dodaj", "Odustani"];
+
+        var i = 0;
+
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => 
+            this.dodajClanskuKartu(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+        Dugmici[1].onclick = (ev) => this.crtajKontroleKarta(host);
+    }
+    dodajClanskuKartu(brojKarte, tipKarte, vaziOd, vaziDo)
+    {
+        fetch("https://localhost:5001/ClanskaKarta/Dodeli_clansku_kartu/" + brojKarte + "/" + tipKarte + "/" + vaziOd + "/" + vaziDo,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                "brojKarte": brojKarte,
+                "tipKarte": tipKarte,
+                "VaziOd": vaziOd,
+                "VaziDo": vaziDo
+            })
+        }).then(Response => {
+
+            let levaforma = this.container.querySelector(".levaForma");
+            this.prikaziClanskeKarte(levaforma);
+        });
+    }
+
+    crtajDijalogIzmeniObrisiKartu(host, param)
+    {
+        this.removeAllChildNodes(host);
+
+        if(param===1)
+        {
+            this.crtajHeader(host, "Produzi clansku kartu");
+        }
+        else 
+        {
+            this.crtajHeader(host, "Ukloni clansku kartu");
+        }
+
+        var produzi=document.createElement("div");
+        host.appendChild(produzi);
+
+        var lblbrojkarte=document.createElement("label");
+        lblbrojkarte.className="labeleKontrole";
+        lblbrojkarte.innerHTML="Broj clanske karte:";
+        produzi.appendChild(lblbrojkarte);
+
+        var inputUnos=document.createElement("input");
+        produzi.appendChild(inputUnos);
+
+        var btn=document.createElement("div");
+        host.appendChild(btn);
+
+        var dugmePromeni=document.createElement("button");
+
+        if(param===1)
+        {
+            dugmePromeni.innerHTML="Produzi";
+        }
+        else
+        {
+            dugmePromeni.innerHTML="Ukloni";
+        }
+
+        dugmePromeni.className="dugmeZaposliOdustani";
+        btn.appendChild(dugmePromeni);
+
+        var dugmeOdustani=document.createElement("button");
+        dugmeOdustani.innerHTML="Odustani";
+        dugmeOdustani.className="dugmeZaposliOdustani";
+        btn.appendChild(dugmeOdustani);
+
+        if(param===1)
+        {
+            dugmePromeni.onclick= (ev) => this.produziClanskuKartu(inputUnos.value);
+        }
+        else
+        {
+            dugmePromeni.onclick= (ev) => this.obrisiClanskuKartu(host,inputUnos.value);
+        }
+
+            dugmeOdustani.onclick= (ev) => this.crtajKontroleKarta(host);
+
+    }
+
+    crtajDijalogIzmeniKartu(host)
+    {
+        this.crtajDijalogIzmeniObrisiKartu(host,1);
+    }
+    crtajDijalogObrisiKartu(host)
+    {
+        this.crtajDijalogIzmeniObrisiKartu(host,2);
+    }
+
+    produziClanskuKartu(brojKarte)
+    {
+        fetch("https://localhost:5001/ClanskaKarta/Produzi_clansku_kartu/" + brojKarte,
+        {
+            method: 'PUT',
+            body: JSON.stringify({
+                "brojkarte":brojKarte
+            })
+        }).then(Response => {
+
+            console.log("Uspesno produzena clanska karta");
+            let levaforma = document.querySelector(".levaForma");
+            this.prikaziClanskeKarte(levaforma);
+
+        });
+    }
+    obrisiClanskuKartu(host, brojKarte)
+    {
+        this.removeAllChildNodes(host);
+
+        fetch("https://localhost:5001/ClanskaKarta/Oduzmi_clansku_kartu/"+ brojKarte, 
+        {
+            method: 'DELETE',
+            body: JSON.stringify({
+                "brojkarte": brojKarte
+            })
+        }).then(Response => {
+
+            console.log("Uspesno obrisana clanska karta");
+            let levaforma = this.container.querySelector(".levaForma");
+            this.prikaziClanskeKarte(levaforma);
+        });
+    }
+    //#endregion Clanska karta
+
 }

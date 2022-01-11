@@ -1,11 +1,10 @@
-.ZaglavljeStil
+.zaglavljeStil
 {
    display: flex;
    flex-direction: row;
    justify-content: space-between;
-   
 }
-.NaslovStil
+.naslovStil
 {
     display: flex;
     font-size: 45px;
@@ -13,7 +12,7 @@
     font-family:'Trebuchet MS';
     color:crimson;
 }
-.NaslovLabStil
+.naslovLabStil
 {
     display: flex;
     font-size: 35px;
@@ -27,14 +26,16 @@
 }
 .dugme
 {
+    width: 100%;
+   margin-right: 3px;
+   margin-bottom: 3px;
     font-size: 20px;
     font-family: 'Trebuchet MS';
     text-align:center;
-    color: darkcyan;
-    background-color:mintcream;
-    width: 100%;
-    border-radius: 15%;
-
+    background-color:rgb(250, 250, 160);
+    border-style: solid;
+    border-color: orange;
+   border-radius: 30px;
 }
 .glavniMeni
 {
@@ -50,29 +51,31 @@
     display: flex;
     flex-direction: column;
 }
-.tabelaBibliotekari, .tabelaKnjige, .tabelaAutori
-{
-    width: 100%;
-    height: 100%;
-    
-}
-table,tr,th,td 
-{
-    text-align: center;
-    table-layout: fixed;
-    border: 1px solid rgb(131, 9, 9);
-    font-family: 'Trebuchet MS';
-}
-table 
-{
-    border-collapse: collapse;
-    background-color:mintcream;
-}
+
 .levaForma
 {
     display: flex;
     flex-direction: column;
 }
+
+.tabelaBibliotekari, .tabelaKnjige, .tabelaAutori, .tabelaClanovi, .tabelaKarte
+{
+    width: 100%;
+    height: 100%;
+}
+table,tr,th,td 
+{
+    text-align: center;
+    table-layout: fixed;
+    border: 1px solid darkblue;
+    font-family: 'Trebuchet MS';
+}
+table 
+{
+    border-collapse: collapse;
+    background-color:rgb(210, 230, 250);
+}
+
 .labeleKontrole 
 {
     font-size: 15px;
@@ -94,18 +97,25 @@ table
     margin-bottom: 20px;
     margin-right: 50px;
     width: 25%;
-    color:rgb(131, 9, 9);
     font-size: 15px;
+    border: 2px solid #4CAF50;
+    background-color: rgb(225, 255, 220);
+    border-radius: 15px;
+    border-style: solid;
 }
 
 .dugmeZaposliOdustani 
 {
     font-size: 15px;
     font-family: 'Trebuchet MS';
-    color: rgb(131, 9, 9);
     height: 100%;
     margin-right: 10px;
+    margin-top: 10px;
     width: 15%;
+    border: 2px solid #af4c4c;
+    background-color: rgb(255, 220, 220);
+    border-style: solid;
+    border-radius: 15px;
 }
 .headerStil
 {
@@ -118,5 +128,5 @@ table
     margin-top: 5px;
     font-family: 'Trebuchet MS';
     font-size: 20px;
-    color: rgb(131, 9, 9);
+    color:rgb(195, 20, 20);
 }

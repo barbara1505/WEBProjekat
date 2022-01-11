@@ -108,7 +108,7 @@ namespace WEBProjekat.Controllers
                 {
                     if(karta.DatumVazenja <= DateTime.Today.Date)
                     {
-                        karta.DatumVazenja=DateTime.Today.Date.AddMonths(1);
+                        karta.DatumVazenja=DateTime.Today.AddMonths(1);
                     }
                 }
                 else
