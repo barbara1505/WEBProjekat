@@ -106,7 +106,7 @@ fetch("https://localhost:5001/Autor/Svi_autori")
 
                                                         //console.log(I);
 
-                                                        var iznajmljivanje = new Iznajmljivanje(I.datumIznajmljivanja, I.datumVracanja, I.knjiga, I.autor, I.bibliotekar);
+                                                        var iznajmljivanje = new Iznajmljivanje(I.id_iznajmljivanje,I.datumIznajmljivanja, I.datumVracanja, I.knjiga, I.clan, I.bibliotekar);
                                                         listaIznajmljivanja.push(iznajmljivanje);
 
                                                         //console.log(iznajmljivanje);

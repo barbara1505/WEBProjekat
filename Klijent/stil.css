@@ -22,7 +22,6 @@
 .glavnaForma
 {
     display: flex;
-    align-items: center;
 }
 .dugme
 {
@@ -44,12 +43,19 @@
     height: 100%;
     
 }
-.leviProzor
+.leviProzor 
 {
     width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
+    margin-right: 15px;
+    
+}
+.desniProzor
+{
+    width: 50%;
+    height: 100%;
 }
 
 .levaForma
@@ -129,4 +135,8 @@ table
     font-family: 'Trebuchet MS';
     font-size: 20px;
     color:rgb(195, 20, 20);
+}
+.dugmeIzn 
+{
+    margin-top: 15px;
 }

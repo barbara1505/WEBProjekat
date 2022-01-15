@@ -84,7 +84,7 @@ export class Biblioteka
         dugmeniz[3].onclick = (ev) => this.prikaziClanove(levaForma);
         dugmeniz[4].onclick = (ev) => this.prikaziClanskeKarte(levaForma);
 
-
+        this.crtajIznajmljivanja(desniProzor);
     }
     removeAllChildNodes(parent) {
         while (parent.firstChild) {
@@ -1566,5 +1566,189 @@ export class Biblioteka
         });
     }
     //#endregion Clanska karta
+
+    //#region Iznajmljivanja
+    crtajIznajmljivanja(host)
+    {
+        this.removeAllChildNodes(host);
+        var tabela=document.createElement("div");
+        tabela.className="IznajmljivanjeTabela";
+        host.appendChild(tabela);
+
+        var kontrole=document.createElement("div");
+        kontrole.className="Kontrole";
+        host.appendChild(kontrole);
+        
+        this.prikaziIznajmljivanja(tabela);
+    }
+    prikaziIznajmljivanja(host)
+    {
+        this.removeAllChildNodes(host);
+
+        this.listaIznajmljivanja=[];
+        fetch("https://localhost:5001/Iznajmljivanje/Sva_iznajmljivanja")
+            .then(p => {
+                p.json().then(izn => {
+                    izn.forEach(A => {
+                        console.log(A);
+                        var iznm = new Iznajmljivanje(A.id_iznajmljivanje, A.datumIznajmljivanja, A.datumVracanja, A.knjiga,A.clan, A.bibliotekar);
+                    
+                        this.listaIznajmljivanja.push(iznm);
+                    });
+
+                    var iznmTabela = document.createElement("table");
+                    iznmTabela.className = "iznmTabela";
+                    host.append(iznmTabela);
+
+                    var tabelaheader = document.createElement("thead");
+                    iznmTabela.appendChild(tabelaheader);
+
+                    var tr = document.createElement("tr");
+                    tabelaheader.appendChild(tr);
+
+                    let th;
+                    var zaglavlje = ["Redni broj", "Clan", "Knjiga","Datum uzimanja","Datum vracanja","Bibliotekar","",""];
+                    zaglavlje.forEach(el => {
+                        th = document.createElement("th");
+                        th.innerHTML = el;
+                        tr.appendChild(th);
+                    })
+                    var tabelabody = document.createElement("tbody");
+                    tabelabody.className = "iznmPodaci";
+                    iznmTabela.appendChild(tabelabody);
+
+                    this.listaIznajmljivanja.forEach(A => {
+                        A.crtaj(iznmTabela);
+                    })
+
+                    this.container.querySelectorAll(".RedIznajmljivanje").forEach(I=>{
+                        console.log(I);
+
+                        var elDatum = document.createElement("td");
+                        var dtp=document.createElement("input");
+                        dtp.setAttribute("type","date");
+                        dtp.className="datapicker";
+                        elDatum.appendChild(dtp);
+                        I.appendChild(elDatum);
+
+                        var elDugme=document.createElement("td");
+                        var btn = document.createElement("button");
+                        
+                        let rbr=I.querySelector(".RedniBroj");
+                        let datum=I.querySelector(".datapicker");
+                        btn.innerHTML="+";
+                        
+                        btn.onclick = (ev) => this.vratiKnjigu(rbr.innerHTML,datum.value);
+                        elDugme.appendChild(btn);
+                        I.appendChild(elDugme);
+                    })
+                })
+            });
+            var dugme=document.createElement("button");
+            dugme.className="dugmeIzn";
+            dugme.innerHTML="Dodaj iznajmljivanje";
+            let desniProzor=document.querySelector(".desniProzor");
+            dugme.onclick=(ev)=>this.crtajKontroleIznajmljivanje(desniProzor);
+            desniProzor.appendChild(dugme);
+    }
+
+    vratiKnjigu(rbr, datum)
+    {
+        fetch("https://localhost:5001/Iznajmljivanje/Vracanje_knjige/" + rbr + "/" + datum,
+            {
+                method: 'PUT',
+                body: JSON.stringify({
+                    "Id": rbr,
+                    "Datum": datum,
+
+                })
+            }).then(Response => {
+
+                console.log("Uspesno promenjen datum");
+                let desniProzor=document.querySelector(".desniProzor");
+                this.crtajIznajmljivanja(desniProzor);
+        
+            });
+    }
+
+    crtajKontroleIznajmljivanje(host)
+    {
+        this.removeAllChildNodes(host);
+        this.crtajHeader(host, "Dodaj novo iznajmljivanje");
+
+        var i = 0;
+        var polja = ["Bibliotekar", "Clan", "Knjiga","Datum"];
+
+        var b,c,k,d;
+        var divniz = [b,c,k,d];
+
+        var lbb, lbc, lbk, lbd;
+        var labeleTekst = ["Bibliotekar:", "Clan:", "Knjiga:","Datum:"];
+        var labele = [lbb, lbc, lbk, lbd];
+
+        var inpb, inpc, inpk, inpd;
+        var inputs = [inpb, inpc, inpk, inpd];
+
+        var poljeKontrole = document.createElement("div");
+        host.appendChild(poljeKontrole);
+
+        polja.forEach(D => {
+
+            divniz[i] = document.createElement("div");
+            divniz[i].className="divIzn";
+            poljeKontrole.appendChild(divniz[i]);
+
+            labele[i] = document.createElement("label");
+            labele[i].className = "labeleKontrole";
+            labele[i].innerHTML = labeleTekst[i];
+            divniz[i].appendChild(labele[i]);
+
+            inputs[i] = document.createElement("input");
+            inputs[i].type="text";
+            inputs[i].className = "InputKontrole";
+            divniz[i].appendChild(inputs[i]);
+
+            i++;
+        })
+        var Btns = document.createElement("div");
+        host.appendChild(Btns);
+
+        var Dodaj, Odustani;
+        var Dugmici = [Dodaj, Odustani];
+        var DugmiciLabele = ["Dodaj", "Odustani"];
+
+        var i = 0;
+
+        DugmiciLabele.forEach(D => {
+            Dugmici[i] = document.createElement("button");
+            Dugmici[i].innerHTML = DugmiciLabele[i];
+            Dugmici[i].className = "dugmeZaposliOdustani";
+            Btns.appendChild(Dugmici[i]);
+            i++;
+        })
+        Dugmici[0].onclick = (ev) => 
+            this.dodajIznajmljivanje(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+        Dugmici[1].onclick = (ev) => this.crtajIznajmljivanja(host);
+    }
+
+    dodajIznajmljivanje(bibliotekar,clan,knjiga,datum)
+    {
+        fetch("https://localhost:5001/Iznajmljivanje/Novo_iznajmljivanje/" + datum + "/" + bibliotekar + "/" + knjiga + "/" + clan,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                "datum": datum,
+                "bibliotekar": bibliotekar,
+                "knjiga": knjiga,
+                "clan": clan
+            })
+        }).then(Response => {
+
+            let desnaforma = this.container.querySelector(".desniProzor");
+            this.crtajIznajmljivanja(desnaforma);
+        });
+    }
+    //#endregion
+
 
 }
