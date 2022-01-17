@@ -28,7 +28,11 @@ export class Bibliotekar {
         tr.appendChild(el);
 
         var el = document.createElement("td");
-        el.innerHTML = this.smena;
+        if(this.smena==0)
+        el.innerHTML = "Prepodne";
+        else
+        el.innerHTML = "Popodne";
+        
         tr.appendChild(el);
     }
 

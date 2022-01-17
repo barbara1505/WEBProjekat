@@ -2,12 +2,13 @@
 {
    display: flex;
    flex-direction: row;
+   flex-wrap: wrap;
    justify-content: space-between;
 }
 .naslovStil
 {
     display: flex;
-    font-size: 45px;
+    font-size: 40px;
     font-style: italic;
     font-family:'Trebuchet MS';
     color:crimson;
@@ -15,20 +16,22 @@
 .naslovLabStil
 {
     display: flex;
-    font-size: 35px;
+    font-size: 25px;
     font-family:'Trebuchet MS';
     color:darkcyan;
 }
 .glavnaForma
 {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 .dugme
 {
-    width: 100%;
-   margin-right: 3px;
-   margin-bottom: 3px;
-    font-size: 20px;
+    width:fit-content;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    font-size: 18px;
     font-family: 'Trebuchet MS';
     text-align:center;
     background-color:rgb(250, 250, 160);
@@ -36,32 +39,48 @@
     border-color: orange;
    border-radius: 30px;
 }
+.dugme:hover
+{
+    background-color: rgba(248, 175, 35);
+}
 .glavniMeni
 {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    
 }
 .leviProzor 
 {
-    width: 50%;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+
+    width: fit-content;
+    height: 100%;
     margin-right: 15px;
     
 }
+.zaPrikaz
+{
+    width: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+}
 .desniProzor
 {
+    display: flex;
+    flex-wrap: wrap;
     width: 50%;
     height: 100%;
+
 }
 
 .levaForma
 {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .tabelaBibliotekari, .tabelaKnjige, .tabelaAutori, .tabelaClanovi, .tabelaKarte
@@ -72,15 +91,19 @@
 table,tr,th,td 
 {
     text-align: center;
-    table-layout: fixed;
-    border: 1px solid darkblue;
-    font-family: 'Trebuchet MS';
+    border: 2px solid  rgb(80, 80, 170);
+    font-family: 'Trebuchet MS';   
 }
 table 
 {
     border-collapse: collapse;
     background-color:rgb(210, 230, 250);
 }
+tr:hover
+{
+    background-color:lightskyblue;   
+}
+
 
 .labeleKontrole 
 {
@@ -101,16 +124,20 @@ table
 {
     margin-top: 20px ;
     margin-bottom: 20px;
-    margin-right: 50px;
-    width: 25%;
+    margin-right: 20px;
     font-size: 15px;
-    border: 2px solid #4CAF50;
-    background-color: rgb(225, 255, 220);
+    border: 2px solid  rgb(80, 80, 170);
+    background-color:rgba(233, 230, 230, 0.85);
     border-radius: 15px;
     border-style: solid;
+    
+}
+.dugmiciKontrole:hover
+{
+    background-color: rgba(160, 215, 230, 0.850);
 }
 
-.dugmeZaposliOdustani 
+.Dodaj
 {
     font-size: 15px;
     font-family: 'Trebuchet MS';
@@ -118,8 +145,19 @@ table
     margin-right: 10px;
     margin-top: 10px;
     width: 15%;
-    border: 2px solid #af4c4c;
-    background-color: rgb(255, 220, 220);
+    border:greenyellow;
+    border-style: solid;
+    border-radius: 15px;
+}
+.Odustani
+{
+    font-size: 15px;
+    font-family: 'Trebuchet MS';
+    height: 100%;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 15%;
+    border: rgb(255, 70, 70);
     border-style: solid;
     border-radius: 15px;
 }
@@ -131,12 +169,67 @@ table
 .rbStil
 {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 5px;
     font-family: 'Trebuchet MS';
-    font-size: 20px;
+    font-size: 18px;
     color:rgb(195, 20, 20);
 }
 .dugmeIzn 
 {
     margin-top: 15px;
+    font-family: 'Trebuchet MS';
+    font-size: 15px;
+    background-color:rgba(233, 230, 230, 0.85);
+    border: 2px solid rgb(190, 1, 190);
+    border-style: solid;
+    border-radius: 15px;
+}
+.dugmeIzn:hover
+{
+    background:thistle
+}
+.iznmTabela
+{
+    background-color:rgb(250, 210, 250);
+    border: 2px solid rgb(190, 1, 190);
+    width:fit-content;
+    height: 100%;
+
+}
+.RedIznajmljivanje:hover
+{
+    background-color:rgba(235, 130, 240, 0.735); 
+}
+.tdIznm
+{
+    border: 2px solid rgb(140, 0, 140);
+}
+.iznZaglavlje:hover
+{
+    background-color:rgba(235, 130, 240, 0.735); 
+}
+.iznmBtn:hover
+{
+    background-color: orange;
+    border-color: orange;
+    border-radius: 5px;
+    font-size:20px;
+    font-family: 'Trebuchet MS';
+}
+.iznmBtn
+{
+    border-color: orange;
+    background-color:rgb(250, 250, 160);
+    border-radius: 5px;
+    font-size:20px;
+    font-family: 'Trebuchet MS';
+}
+.Dodaj:hover
+{
+    background-color: greenyellow;
+}
+.Odustani:hover
+{
+    background-color: rgb(255, 70, 70);
 }

@@ -32,14 +32,14 @@ export class Biblioteka
         let img = document.createElement("img");
         img.src = "http://www.nbpi.org.rs/wordpress/wp-content/uploads/2020/03/%C4%8Citam-ne-skitam-Narodna-biblioteka-Pirot.jpg"
 
-        img.height = "200";
-        img.width = "500";
+        img.height = "150";
+        img.width = "400";
         zaglavlje.appendChild(img);
 
 
         let naslov = document.createElement("h2");
         naslov.className = "naslovStil";
-        naslov.innerHTML = "Biblioteka Pirot";
+        naslov.innerHTML = this.naziv;
         zaglavlje.appendChild(naslov);
 
 
@@ -246,13 +246,14 @@ export class Biblioteka
         var Zaposli, Odustani;
         var Dugmici = [Zaposli, Odustani];
         var DugmiciLabele = ["Zaposli", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
 
             i++;
@@ -313,7 +314,7 @@ export class Biblioteka
 
         var Obrisi = document.createElement("button");
         Obrisi.innerHTML = "Otpusti";
-        Obrisi.className = "dugmeZaposliOdustani";
+        Obrisi.className = "Dodaj";
         Btns.appendChild(Obrisi);
 
         Obrisi.onclick = (ev) => {
@@ -322,7 +323,7 @@ export class Biblioteka
 
         var Odustani = document.createElement("button");
         Odustani.innerHTML = "Odustani";
-        Odustani.className = "dugmeZaposliOdustani"
+        Odustani.className = "Odustani"
         Btns.appendChild(Odustani);
 
         Odustani.onclick = (ev) => this.crtajKontroleBibliotekar(host);
@@ -403,7 +404,7 @@ export class Biblioteka
     crtajKontroleKnjiga(host) {
         this.removeAllChildNodes(host);
 
-        var dugmelab = ["Dodaj knjigu", "Prikazi knjige odredjenog zanra"];
+        var dugmelab = ["Dodaj knjigu", "Prikazi knjige odabranog zanra"];
         var dugmeniz = [];
 
         dugmelab.forEach(d => {
@@ -489,14 +490,15 @@ export class Biblioteka
 
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
-        var DugmiciLabele = ["Dodaj knjigu", "Odustani"];
+        var DugmiciLabele = ["Dodaj", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
 
             i++;
@@ -571,7 +573,7 @@ export class Biblioteka
 
         var prikazi = document.createElement("button");
         prikazi.innerHTML = "Prikazi";
-        prikazi.className = "dugmeZaposliOdustani";
+        prikazi.className = "Dodaj";
         Btns.appendChild(prikazi);
 
         prikazi.onclick = (ev) => {
@@ -580,7 +582,7 @@ export class Biblioteka
 
         var Odustani = document.createElement("button");
         Odustani.innerHTML = "Odustani";
-        Odustani.className = "dugmeZaposliOdustani"
+        Odustani.className = "Odustani"
         Btns.appendChild(Odustani);
 
         Odustani.onclick = (ev) => this.crtajKontroleKnjiga(host);
@@ -770,14 +772,15 @@ export class Biblioteka
 
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
-        var DugmiciLabele = ["Dodaj knjigu autoru", "Odustani"];
+        var DugmiciLabele = ["Dodaj", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
 
             i++;
@@ -848,14 +851,15 @@ export class Biblioteka
 
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
-        var DugmiciLabele = ["Dodaj autora", "Odustani"];
+        var DugmiciLabele = ["Dodaj", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
 
             i++;
@@ -926,12 +930,13 @@ export class Biblioteka
         var Primeni, Odustani;
         var Dugmici = [Primeni, Odustani];
         var DugmiciLabele = ["Primeni", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
             i++;
         })
@@ -1125,14 +1130,15 @@ export class Biblioteka
 
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
-        var DugmiciLabele = ["Dodaj clana", "Odustani"];
+        var DugmiciLabele = ["Dodaj", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
 
             i++;
@@ -1195,7 +1201,7 @@ export class Biblioteka
 
         var Obrisi = document.createElement("button");
         Obrisi.innerHTML = "Ukloni";
-        Obrisi.className = "dugmeZaposliOdustani";
+        Obrisi.className = "Dodaj";
         Btns.appendChild(Obrisi);
 
         Obrisi.onclick = (ev) => {
@@ -1204,7 +1210,7 @@ export class Biblioteka
 
         var Odustani = document.createElement("button");
         Odustani.innerHTML = "Odustani";
-        Odustani.className = "dugmeZaposliOdustani"
+        Odustani.className = "Odustani"
         Btns.appendChild(Odustani);
 
         Odustani.onclick = (ev) => this.crtajKontroleClan(host);
@@ -1277,7 +1283,7 @@ export class Biblioteka
 
         var Izmeni = document.createElement("button");
         Izmeni.innerHTML = "Izmeni";
-        Izmeni.className = "dugmeZaposliOdustani";
+        Izmeni.className = "Dodaj";
         Btns.appendChild(Izmeni);
 
         Izmeni.onclick = (ev) => {
@@ -1285,7 +1291,7 @@ export class Biblioteka
         }
         var Odustani = document.createElement("button");
         Odustani.innerHTML = "Odustani";
-        Odustani.className = "dugmeZaposliOdustani"
+        Odustani.className = "Odustani"
         Btns.appendChild(Odustani);
 
         Odustani.onclick = (ev) => this.crtajKontroleClan(host);
@@ -1361,7 +1367,7 @@ export class Biblioteka
                     })
 
                     let FormaKontrole = document.createElement("div");
-                    FormaKontrole.className = "FormaKontrole";
+                    FormaKontrole.className = "formaDugmici";
                     host.appendChild(FormaKontrole);
 
                     this.crtajKontroleKarta(FormaKontrole);
@@ -1432,13 +1438,14 @@ export class Biblioteka
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
         var DugmiciLabele = ["Dodaj", "Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
             Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
             i++;
         })
@@ -1502,12 +1509,12 @@ export class Biblioteka
             dugmePromeni.innerHTML="Ukloni";
         }
 
-        dugmePromeni.className="dugmeZaposliOdustani";
+        dugmePromeni.className="Dodaj";
         btn.appendChild(dugmePromeni);
 
         var dugmeOdustani=document.createElement("button");
         dugmeOdustani.innerHTML="Odustani";
-        dugmeOdustani.className="dugmeZaposliOdustani";
+        dugmeOdustani.className="Odustani";
         btn.appendChild(dugmeOdustani);
 
         if(param===1)
@@ -1604,12 +1611,14 @@ export class Biblioteka
                     iznmTabela.appendChild(tabelaheader);
 
                     var tr = document.createElement("tr");
+                    tr.className="iznZaglavlje";
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Redni broj", "Clan", "Knjiga","Datum uzimanja","Datum vracanja","Bibliotekar","",""];
+                    var zaglavlje = ["Rbr", "Clan", "Knjiga","Datum uzimanja","Datum vracanja","Bibliotekar","Novi datum vracanja",""];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
+                        th.className="tdIznm";
                         th.innerHTML = el;
                         tr.appendChild(th);
                     })
@@ -1625,6 +1634,7 @@ export class Biblioteka
                         console.log(I);
 
                         var elDatum = document.createElement("td");
+                        elDatum.className="tdIznm";
                         var dtp=document.createElement("input");
                         dtp.setAttribute("type","date");
                         dtp.className="datapicker";
@@ -1632,7 +1642,9 @@ export class Biblioteka
                         I.appendChild(elDatum);
 
                         var elDugme=document.createElement("td");
+                        elDugme.className="tdIznm";
                         var btn = document.createElement("button");
+                        btn.className="iznmBtn";
                         
                         let rbr=I.querySelector(".RedniBroj");
                         let datum=I.querySelector(".datapicker");
@@ -1715,14 +1727,15 @@ export class Biblioteka
 
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
+        var DugmiciKlase = ["Dodaj","Odustani"];
         var DugmiciLabele = ["Dodaj", "Odustani"];
 
         var i = 0;
 
         DugmiciLabele.forEach(D => {
             Dugmici[i] = document.createElement("button");
-            Dugmici[i].innerHTML = DugmiciLabele[i];
-            Dugmici[i].className = "dugmeZaposliOdustani";
+            Dugmici[i].innerHTML = D;
+            Dugmici[i].className = DugmiciKlase[i];
             Btns.appendChild(Dugmici[i]);
             i++;
         })
@@ -1749,6 +1762,4 @@ export class Biblioteka
         });
     }
     //#endregion
-
-
 }

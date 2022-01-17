@@ -22,24 +22,28 @@ export class Iznajmljivanje
         host.appendChild(tr);
 
         var el = document.createElement("td");
-        el.className="RedniBroj";
+        el.classList=("RedniBroj","tdIznm");
         el.innerHTML = this.redniBroj;
         tr.appendChild(el);
 
         var el = document.createElement("td");
+        el.className="tdIznm";
         el.innerHTML = this.clan.ime +" "+this.clan.prezime;
         tr.appendChild(el);
 
         var el = document.createElement("td");
+        el.className="tdIznm";
         el.innerHTML = this.knjiga.naslov;
         tr.appendChild(el);
 
         var el = document.createElement("td");
+        el.className="tdIznm";
         el.innerHTML = this.datumUzimanja;
         tr.appendChild(el);
 
         
         var el = document.createElement("td");
+        el.className="tdIznm";
         if(this.datumVracanja!=null)
         {
             el.innerHTML = this.datumVracanja;
@@ -49,6 +53,7 @@ export class Iznajmljivanje
         tr.appendChild(el);
 
         var el = document.createElement("td");
+        el.className="tdIznm";
         el.innerHTML = this.bibliotekar.ime +" "+this.bibliotekar.prezime;
         tr.appendChild(el);
     }

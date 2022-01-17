@@ -24,7 +24,8 @@ export class Knjiga
         tr.appendChild(el);
 
         el = document.createElement("td");
-        el.innerHTML = this.zanr;
+        var zanrovi=["Za decu","Lektira","Price","Poezija","Roman"];
+        el.innerHTML = zanrovi[this.zanr];
         tr.appendChild(el);
 
         el = document.createElement("td");
