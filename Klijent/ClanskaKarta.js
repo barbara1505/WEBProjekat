@@ -23,7 +23,8 @@ export class ClanskaKarta {
         tr.appendChild(el);
 
         el = document.createElement("td");
-        el.innerHTML = this.tip;
+        var tipovi=["Standardna","Djacka","Studentska","Penzionerska"];
+        el.innerHTML = tipovi[this.tip];
         tr.appendChild(el);
 
         el = document.createElement("td");
