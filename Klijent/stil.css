@@ -236,3 +236,7 @@ tr:hover
     font-size:20px;
     font-family: 'Trebuchet MS';
 }
+.RedniBroj
+{
+    display: none;
+}

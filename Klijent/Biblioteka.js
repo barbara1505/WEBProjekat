@@ -1659,7 +1659,7 @@ export class Biblioteka {
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Rbr", "Clan", "Knjiga", "Datum uzimanja", "Datum vracanja", "Bibliotekar", "Novi datum vracanja", ""];
+                    var zaglavlje = ["Clan", "Knjiga", "Datum uzimanja", "Datum vracanja", "Bibliotekar", "Novi datum vracanja", ""];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
                         th.className = "tdIznm";
