@@ -5,10 +5,8 @@ import { Knjiga } from "./Knjiga.js";
 import { ClanskaKarta } from "./ClanskaKarta.js"
 import { Iznajmljivanje } from "./Iznajmljivanje.js"
 
-export class Biblioteka 
-{
-    constructor(naziv, listaAutora, listaBibliotekara, listaKnjiga, listaClanova, listaKarte, listaIznajmljivanja) 
-    {
+export class Biblioteka {
+    constructor(naziv, listaAutora, listaBibliotekara, listaKnjiga, listaClanova, listaKarte, listaIznajmljivanja) {
         this.naziv = naziv;
         this.listaAutora = listaAutora;
         this.listaBibliotekara = listaBibliotekara;
@@ -29,24 +27,10 @@ export class Biblioteka
         zaglavlje.className = "zaglavljeStil";
         this.container.appendChild(zaglavlje);
 
-        let img = document.createElement("img");
-        img.src = "http://www.nbpi.org.rs/wordpress/wp-content/uploads/2020/03/%C4%8Citam-ne-skitam-Narodna-biblioteka-Pirot.jpg"
-
-        img.height = "150";
-        img.width = "400";
-        zaglavlje.appendChild(img);
-
-
         let naslov = document.createElement("h2");
         naslov.className = "naslovStil";
         naslov.innerHTML = this.naziv;
         zaglavlje.appendChild(naslov);
-
-
-        let naslovlab = document.createElement("h2");
-        naslovlab.className = "naslovLabStil";
-        naslovlab.innerHTML = "Upravljanje poslovanjem";
-        zaglavlje.appendChild(naslovlab);
 
         let glavnaForma = document.createElement("div");
         glavnaForma.className = "glavnaForma";
@@ -259,6 +243,18 @@ export class Biblioteka
             i++;
         })
         Dugmici[0].onclick = (ev) => {
+            if (inputs[0].value < 10000 || inputs[0].value > 99999)
+                alert("Pogresna vrednost za broj radne knjizice!");
+
+            if (inputs[1].value == "")
+                alert("Morate uneti ime!");
+
+            if (inputs[2].value == "")
+                alert("Morate uneti prezime!");
+
+            if (inputs[3].value == "")
+                alert("Morate uneti ime!");
+
             this.dodajBibliotekara(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
         }
 
@@ -318,6 +314,9 @@ export class Biblioteka
         Btns.appendChild(Obrisi);
 
         Obrisi.onclick = (ev) => {
+            if (inputKnjizica.value < 10000 || inputKnjizica.value > 99999)
+                alert("Pogresna vrednost za broj radne knjizice");
+
             this.obrisiBibliotekara(host, inputKnjizica.value);
         }
 
@@ -504,6 +503,16 @@ export class Biblioteka
             i++;
         })
         Dugmici[0].onclick = (ev) => {
+
+            if (inputs[0].value == "")
+                alert("Morate uneti naslov knjige!");
+
+            if (inputs[1].value == "")
+                alert("Morate uneti ime autora!");
+
+            if (inputs[2].value == "")
+                alert("Morate uneti prezime autora!");
+
             this.dodajKnjigu(inputs[0].value, inputs[3].value, inputs[4].value, inputs[5].value, inputs[1].value, inputs[2].value);
         }
 
@@ -785,8 +794,18 @@ export class Biblioteka
 
             i++;
         })
-        Dugmici[0].onclick = (ev) => 
+        Dugmici[0].onclick = (ev) => {
+            if (inputs[0].value == "")
+                alert("Morate uneti ime autora");
+
+            if (inputs[1].value == "")
+                alert("Morate uneti prezime autora");
+
+            if (inputs[2].value == "")
+                alert("Morate uneti naslov knjige");
+
             this.dodajKnjiguAutoru(inputs[0].value, inputs[1].value, inputs[2].value);
+        }
         Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
 
     }
@@ -864,13 +883,19 @@ export class Biblioteka
 
             i++;
         })
-        Dugmici[0].onclick = (ev) => 
+        Dugmici[0].onclick = (ev) => {
+            if (inputs[0].value == "")
+                alert("Morate uneti ime autora");
+
+            if (inputs[1].value == "")
+                alert("Morate uneti prezime autora");
             this.dodajAutora(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+        }
         Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
     }
     dodajAutora(ime, prezime, godinaRodjenja, godinaSmrti) {
 
-            fetch("https://localhost:5001/Autor/Dodaj_Autora/" + ime + "/" + prezime + "/" + godinaRodjenja + "/" + godinaSmrti,
+        fetch("https://localhost:5001/Autor/Dodaj_Autora/" + ime + "/" + prezime + "/" + godinaRodjenja + "/" + godinaSmrti,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -886,8 +911,7 @@ export class Biblioteka
             });
     }
 
-    crtajDijalogPrikaziKnjigeAutora(host) 
-    { 
+    crtajDijalogPrikaziKnjigeAutora(host) {
         this.removeAllChildNodes(host);
         this.crtajHeader(host, "Odaberite autora");
 
@@ -940,17 +964,23 @@ export class Biblioteka
             Btns.appendChild(Dugmici[i]);
             i++;
         })
-        Dugmici[0].onclick = (ev) => 
-            this.prikaziKnjigeAutora(host,inputs[0].value, inputs[1].value);
+        Dugmici[0].onclick = (ev) => {
+            if (inputs[0].value == "")
+                alert("Morate uneti ime autora");
+
+            if (inputs[1].value == "")
+                alert("Morate uneti prezime autora");
+
+            this.prikaziKnjigeAutora(host, inputs[0].value, inputs[1].value);
+        }
         Dugmici[1].onclick = (ev) => this.crtajKontroleAutor(host);
     }
-    prikaziKnjigeAutora(host, ime, prezime)
-    {
+    prikaziKnjigeAutora(host, ime, prezime) {
         this.removeAllChildNodes(host);
 
         this.listaKnjiga = [];
 
-        fetch("https://localhost:5001/Autor/Knjige_Autora/" + ime +"/" +prezime)
+        fetch("https://localhost:5001/Autor/Knjige_Autora/" + ime + "/" + prezime)
             .then(p => {
                 p.json().then(knjige => {
                     knjige.forEach(K => {
@@ -997,8 +1027,7 @@ export class Biblioteka
 
     //#region Clan
 
-    prikaziClanove(host)
-    {
+    prikaziClanove(host) {
         this.removeAllChildNodes(host);
 
         this.listaClanova = [];
@@ -1028,7 +1057,7 @@ export class Biblioteka
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Ime", "Prezime", "Adresa", "Broj telefona","Broj clanske karte"];
+                    var zaglavlje = ["Ime", "Prezime", "Adresa", "Broj telefona", "Broj clanske karte"];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
                         th.innerHTML = el;
@@ -1050,8 +1079,7 @@ export class Biblioteka
                 })
             });
     }
-    crtajKontroleClan(host)
-    {
+    crtajKontroleClan(host) {
         this.removeAllChildNodes(host);
 
         var rblab = ["Dodaj clana", "Ukloni clana", "Izmeni podatke o clanu"];
@@ -1085,19 +1113,18 @@ export class Biblioteka
         rbniz[2].onclick = (ev) => this.crtajDijalogIzmeniClana(host);
     }
 
-    crtajDijalogDodajClana(host)
-    {
+    crtajDijalogDodajClana(host) {
         this.removeAllChildNodes(host);
         this.crtajHeader(host, "Dodaj clana");
 
         var i = 0;
-        var polja = ["Ime", "Prezime", "Adresa", "Telefon","Broj clanske karte"];
+        var polja = ["Ime", "Prezime", "Adresa", "Telefon", "Broj clanske karte"];
 
         var ime, prezime, adr, tel, brk;
         var divniz = [ime, prezime, adr, tel, brk];
 
         var lbime, lbprezime, lbadr, lbtel, lbbrk;
-        var labeleTekst = ["Ime:", "Prezime:", "Adresa:", "Telefon:","Broj clanske karte:"];
+        var labeleTekst = ["Ime:", "Prezime:", "Adresa:", "Telefon:", "Broj clanske karte:"];
         var labele = [lbime, lbprezime, lbadr, lbtel, lbbrk];
 
         var inpime, inpprezime, inpadr, inptel, inpbrk;
@@ -1143,31 +1170,39 @@ export class Biblioteka
 
             i++;
         })
-        Dugmici[0].onclick = (ev) => 
-            this.dodajAutora(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
+        Dugmici[0].onclick = (ev) => {
+            if (inputs[0].value == "")
+                alert("Morate uneti ime clana");
+
+            if (inputs[1].value == "")
+                alert("Morate uneti prezime clana");
+
+            if (inputs[2].value == "")
+                alert("Morate uneti adresu");
+
+            this.dodajClana(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value, inputs[4].value);
+        }
         Dugmici[1].onclick = (ev) => this.crtajKontroleClan(host);
     }
-    dodajClana(Ime, Prezime, Adresa, Telefon, brojkarte)
-    {
-        fetch("https://localhost:5001/Clan/Upisi_clana/" + Ime + "/" + Prezime + "/" + Adresa + "/" + Telefon+"/"+ brojKarte,
-        {
-            method: 'POST',
-            body: JSON.stringify({
-                "Ime": Ime,
-                "Prezime": Prezime,
-                "Adresa": Adresa,
-                "Telefon": Telefon,
-                "brojKarte":brojkarte
-            })
-        }).then(Response => {
+    dodajClana(Ime, Prezime, Adresa, Telefon, brojkarte) {
+        fetch("https://localhost:5001/Clan/Upisi_clana/" + Ime + "/" + Prezime + "/" + Adresa + "/" + Telefon + "/" + brojkarte,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "Ime": Ime,
+                    "Prezime": Prezime,
+                    "Adresa": Adresa,
+                    "Telefon": Telefon,
+                    "brojKarte": brojkarte
+                })
+            }).then(Response => {
 
-            let levaforma = this.container.querySelector(".levaForma");
-            this.prikaziClanove(levaforma);
-        });
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziClanove(levaforma);
+            });
     }
 
-    crtajDijalogUkloniClana(host)
-    {
+    crtajDijalogUkloniClana(host) {
         this.removeAllChildNodes(host);
 
         this.crtajHeader(host, "Ukloni clana");
@@ -1182,8 +1217,10 @@ export class Biblioteka
 
         var lbime = document.createElement("label");
         var lbprezime = document.createElement("label");
+        lbime.className = "labeleKontrole";
+        lbprezime.className = "labeleKontrole";
         lbime.innerHTML = "Ime:";
-        lbprezime.innerHTML="Prezime:";
+        lbprezime.innerHTML = "Prezime:";
 
         divime.appendChild(lbime);
         divprezime.appendChild(lbprezime);
@@ -1192,6 +1229,8 @@ export class Biblioteka
         var inputPrezime = document.createElement("input");
         inputIme.setAttribute("type", "text");
         inputPrezime.setAttribute("type", "text");
+        inputIme.className = "InputKontrole";
+        inputPrezime.className = "InputKontrole";
         divime.appendChild(inputIme);
         divprezime.appendChild(inputPrezime);
 
@@ -1205,6 +1244,12 @@ export class Biblioteka
         Btns.appendChild(Obrisi);
 
         Obrisi.onclick = (ev) => {
+
+            if (inputIme.value == "")
+                alert("Morate uneti ime clana");
+
+            if (inputPrezime.value == "")
+                alert("Morate uneti prezime clana");
             this.ukloniClana(host, inputIme.value, inputPrezime.value);
         }
 
@@ -1215,27 +1260,25 @@ export class Biblioteka
 
         Odustani.onclick = (ev) => this.crtajKontroleClan(host);
     }
-    
-    ukloniClana(host, Ime, Prezime)
-    {
+
+    ukloniClana(host, Ime, Prezime) {
         this.removeAllChildNodes(host);
 
-        fetch("https://localhost:5001/Clan/Ukloni_clana/"+ Ime + "/" + Prezime, 
-        {
-            method: 'DELETE',
-            body: JSON.stringify({
-                "Ime": Ime,
-                "Prezime":Prezime
-            })
-        }).then(Response => {
+        fetch("https://localhost:5001/Clan/Ukloni_clana/" + Ime + "/" + Prezime,
+            {
+                method: 'DELETE',
+                body: JSON.stringify({
+                    "Ime": Ime,
+                    "Prezime": Prezime
+                })
+            }).then(Response => {
 
-            let levaforma = this.container.querySelector(".levaForma");
-            this.prikaziClanove(levaforma);
-        });
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziClanove(levaforma);
+            });
     }
 
-    crtajDijalogIzmeniClana(host)
-    {
+    crtajDijalogIzmeniClana(host) {
         this.removeAllChildNodes(host);
 
         this.crtajHeader(host, "Izmeni podatke o clanu:");
@@ -1268,12 +1311,12 @@ export class Biblioteka
         br.appendChild(lbbr);
 
         var inputIme = document.createElement("input");
-        inputIme.type="text";
+        inputIme.type = "text";
         var inputPrezime = document.createElement("input");
-        inputPrezime.type="text";
+        inputPrezime.type = "text";
         var inputBr = document.createElement("input");
-        inputBr.type="text";
-    
+        inputBr.type = "text";
+
         ime.appendChild(inputIme);
         prezime.appendChild(inputPrezime);
         br.appendChild(inputBr);
@@ -1287,6 +1330,12 @@ export class Biblioteka
         Btns.appendChild(Izmeni);
 
         Izmeni.onclick = (ev) => {
+            if (inputIme.value == "")
+                alert("Morate uneti ime clana!");
+
+            if (inputPrezime.value == "")
+                alert("Morate uneti prezime clana!");
+
             this.izmeniPodatkeClan(inputIme.value, inputPrezime.value, inputBr.value);
         }
         var Odustani = document.createElement("button");
@@ -1296,8 +1345,7 @@ export class Biblioteka
 
         Odustani.onclick = (ev) => this.crtajKontroleClan(host);
     }
-    izmeniPodatkeClan(ime, prezime, novibroj)
-    {
+    izmeniPodatkeClan(ime, prezime, novibroj) {
         fetch("https://localhost:5001/Clan/Promeni_podatke_clan/" + ime + "/" + prezime + "/" + novibroj,
             {
                 method: 'PUT',
@@ -1320,8 +1368,7 @@ export class Biblioteka
     //#endregion 
 
     //#region Clanska karta
-    prikaziClanskeKarte(host)
-    {
+    prikaziClanskeKarte(host) {
         this.removeAllChildNodes(host);
 
         this.listaKarte = [];
@@ -1352,7 +1399,7 @@ export class Biblioteka
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Broj clanske karte", "Tip", "Clanarina","Datum izdavanja","Datum vazenja"];
+                    var zaglavlje = ["Broj clanske karte", "Tip", "Clanarina", "Datum izdavanja", "Datum vazenja"];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
                         th.innerHTML = el;
@@ -1374,11 +1421,10 @@ export class Biblioteka
                 })
             });
     }
-    crtajKontroleKarta(host)
-    {
+    crtajKontroleKarta(host) {
         this.removeAllChildNodes(host);
 
-        var dugmelab = ["Napravi clansku kartu", "Ukloni clansku kartu","Izmeni clansku kartu"];
+        var dugmelab = ["Napravi clansku kartu", "Ukloni clansku kartu", "Izmeni clansku kartu"];
         var dugmeniz = [];
 
         dugmelab.forEach(d => {
@@ -1394,23 +1440,22 @@ export class Biblioteka
         dugmeniz[2].onclick = (ev) => this.crtajDijalogIzmeniKartu(host);
     }
 
-    crtajDijalogDodajKartu(host)
-    {
+    crtajDijalogDodajKartu(host) {
         this.removeAllChildNodes(host);
         this.crtajHeader(host, "Dodaj clansku kartu");
 
         var i = 0;
-        var polja = ["Broj karte", "Tip", "Datum izdavanja","Datum vazenja"];
+        var polja = ["Broj karte", "Tip", "Datum izdavanja", "Datum vazenja"];
 
-        var brk,tip,datizd,datvaz;
-        var divniz = [brk,tip,datizd,datvaz];
+        var brk, tip, datizd, datvaz;
+        var divniz = [brk, tip, datizd, datvaz];
 
         var lbbrk, lbtip, lbdatizd, lbdatvaz;
-        var labeleTekst = ["Broj karte:", "Tip:", "Datum izdavanja:","Datum vazenja:"];
+        var labeleTekst = ["Broj karte:", "Tip:", "Datum izdavanja:", "Datum vazenja:"];
         var labele = [lbbrk, lbtip, lbdatizd, lbdatvaz];
 
-        var inpbrk,inptip,inpdatiz,inpdatvaz;
-        var inputs = [inpbrk,inptip,inpdatiz,inpdatvaz];
+        var inpbrk, inptip, inpdatiz, inpdatvaz;
+        var inputs = [inpbrk, inptip, inpdatiz, inpdatvaz];
 
         var poljeKontrole = document.createElement("div");
         host.appendChild(poljeKontrole);
@@ -1426,7 +1471,7 @@ export class Biblioteka
             divniz[i].appendChild(labele[i]);
 
             inputs[i] = document.createElement("input");
-            inputs[i].type="text";
+            inputs[i].type = "text";
             inputs[i].className = "InputKontrole";
             divniz[i].appendChild(inputs[i]);
 
@@ -1449,157 +1494,156 @@ export class Biblioteka
             Btns.appendChild(Dugmici[i]);
             i++;
         })
-        Dugmici[0].onclick = (ev) => 
+        Dugmici[0].onclick = (ev) => {
+            if (inputs[0].value < 1 || inputs[0].value > 10000)
+                alert("Morate uneti vrednost izmedju 1 i 10000");
+            if (inputs[1].value != "Standardna" || inputs[1].value != "Djacka" || inputs[1].value != "Studentska" || inputs[1].value != "Penzionerska")
+                alert("Neispravan tip clanske karte!");
             this.dodajClanskuKartu(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+        }
         Dugmici[1].onclick = (ev) => this.crtajKontroleKarta(host);
     }
-    dodajClanskuKartu(brojKarte, tipKarte, vaziOd, vaziDo)
-    {
+    dodajClanskuKartu(brojKarte, tipKarte, vaziOd, vaziDo) {
         fetch("https://localhost:5001/ClanskaKarta/Dodeli_clansku_kartu/" + brojKarte + "/" + tipKarte + "/" + vaziOd + "/" + vaziDo,
-        {
-            method: 'POST',
-            body: JSON.stringify({
-                "brojKarte": brojKarte,
-                "tipKarte": tipKarte,
-                "VaziOd": vaziOd,
-                "VaziDo": vaziDo
-            })
-        }).then(Response => {
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "brojKarte": brojKarte,
+                    "tipKarte": tipKarte,
+                    "VaziOd": vaziOd,
+                    "VaziDo": vaziDo
+                })
+            }).then(Response => {
 
-            let levaforma = this.container.querySelector(".levaForma");
-            this.prikaziClanskeKarte(levaforma);
-        });
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziClanskeKarte(levaforma);
+            });
     }
 
-    crtajDijalogIzmeniObrisiKartu(host, param)
-    {
+    crtajDijalogIzmeniObrisiKartu(host, param) {
         this.removeAllChildNodes(host);
 
-        if(param===1)
-        {
+        if (param === 1) {
             this.crtajHeader(host, "Produzi clansku kartu");
         }
-        else 
-        {
+        else {
             this.crtajHeader(host, "Ukloni clansku kartu");
         }
 
-        var produzi=document.createElement("div");
+        var produzi = document.createElement("div");
         host.appendChild(produzi);
 
-        var lblbrojkarte=document.createElement("label");
-        lblbrojkarte.className="labeleKontrole";
-        lblbrojkarte.innerHTML="Broj clanske karte:";
+        var lblbrojkarte = document.createElement("label");
+        lblbrojkarte.className = "labeleKontrole";
+        lblbrojkarte.innerHTML = "Broj clanske karte:";
         produzi.appendChild(lblbrojkarte);
 
-        var inputUnos=document.createElement("input");
+        var inputUnos = document.createElement("input");
         produzi.appendChild(inputUnos);
 
-        var btn=document.createElement("div");
+        var btn = document.createElement("div");
         host.appendChild(btn);
 
-        var dugmePromeni=document.createElement("button");
+        var dugmePromeni = document.createElement("button");
 
-        if(param===1)
-        {
-            dugmePromeni.innerHTML="Produzi";
+        if (param === 1) {
+            dugmePromeni.innerHTML = "Produzi";
         }
-        else
-        {
-            dugmePromeni.innerHTML="Ukloni";
+        else {
+            dugmePromeni.innerHTML = "Ukloni";
         }
 
-        dugmePromeni.className="Dodaj";
+        dugmePromeni.className = "Dodaj";
         btn.appendChild(dugmePromeni);
 
-        var dugmeOdustani=document.createElement("button");
-        dugmeOdustani.innerHTML="Odustani";
-        dugmeOdustani.className="Odustani";
+        var dugmeOdustani = document.createElement("button");
+        dugmeOdustani.innerHTML = "Odustani";
+        dugmeOdustani.className = "Odustani";
         btn.appendChild(dugmeOdustani);
 
-        if(param===1)
-        {
-            dugmePromeni.onclick= (ev) => this.produziClanskuKartu(inputUnos.value);
+        if (param === 1) {
+            dugmePromeni.onclick = (ev) => {
+                if (inputUnos.value < 1 || inputUnos.value > 10000)
+                    alert("Morate uneti vrednost izmedju 1 i 10000");
+                this.produziClanskuKartu(inputUnos.value);
+            }
         }
-        else
-        {
-            dugmePromeni.onclick= (ev) => this.obrisiClanskuKartu(host,inputUnos.value);
+        else {
+            dugmePromeni.onclick = (ev) => {
+                if (inputUnos.value < 1 || inputUnos.value > 10000)
+                    alert("Morate uneti vrednost izmedju 1 i 10000");
+                this.obrisiClanskuKartu(host, inputUnos.value);
+            }
         }
 
-            dugmeOdustani.onclick= (ev) => this.crtajKontroleKarta(host);
+        dugmeOdustani.onclick = (ev) => this.crtajKontroleKarta(host);
 
     }
 
-    crtajDijalogIzmeniKartu(host)
-    {
-        this.crtajDijalogIzmeniObrisiKartu(host,1);
+    crtajDijalogIzmeniKartu(host) {
+        this.crtajDijalogIzmeniObrisiKartu(host, 1);
     }
-    crtajDijalogObrisiKartu(host)
-    {
-        this.crtajDijalogIzmeniObrisiKartu(host,2);
+    crtajDijalogObrisiKartu(host) {
+        this.crtajDijalogIzmeniObrisiKartu(host, 2);
     }
 
-    produziClanskuKartu(brojKarte)
-    {
+    produziClanskuKartu(brojKarte) {
         fetch("https://localhost:5001/ClanskaKarta/Produzi_clansku_kartu/" + brojKarte,
-        {
-            method: 'PUT',
-            body: JSON.stringify({
-                "brojkarte":brojKarte
-            })
-        }).then(Response => {
+            {
+                method: 'PUT',
+                body: JSON.stringify({
+                    "brojkarte": brojKarte
+                })
+            }).then(Response => {
 
-            console.log("Uspesno produzena clanska karta");
-            let levaforma = document.querySelector(".levaForma");
-            this.prikaziClanskeKarte(levaforma);
+                console.log("Uspesno produzena clanska karta");
+                let levaforma = document.querySelector(".levaForma");
+                this.prikaziClanskeKarte(levaforma);
 
-        });
+            });
     }
-    obrisiClanskuKartu(host, brojKarte)
-    {
+    obrisiClanskuKartu(host, brojKarte) {
         this.removeAllChildNodes(host);
 
-        fetch("https://localhost:5001/ClanskaKarta/Oduzmi_clansku_kartu/"+ brojKarte, 
-        {
-            method: 'DELETE',
-            body: JSON.stringify({
-                "brojkarte": brojKarte
-            })
-        }).then(Response => {
+        fetch("https://localhost:5001/ClanskaKarta/Oduzmi_clansku_kartu/" + brojKarte,
+            {
+                method: 'DELETE',
+                body: JSON.stringify({
+                    "brojkarte": brojKarte
+                })
+            }).then(Response => {
 
-            console.log("Uspesno obrisana clanska karta");
-            let levaforma = this.container.querySelector(".levaForma");
-            this.prikaziClanskeKarte(levaforma);
-        });
+                console.log("Uspesno obrisana clanska karta");
+                let levaforma = this.container.querySelector(".levaForma");
+                this.prikaziClanskeKarte(levaforma);
+            });
     }
     //#endregion Clanska karta
 
     //#region Iznajmljivanja
-    crtajIznajmljivanja(host)
-    {
+    crtajIznajmljivanja(host) {
         this.removeAllChildNodes(host);
-        var tabela=document.createElement("div");
-        tabela.className="IznajmljivanjeTabela";
+        var tabela = document.createElement("div");
+        tabela.className = "IznajmljivanjeTabela";
         host.appendChild(tabela);
 
-        var kontrole=document.createElement("div");
-        kontrole.className="Kontrole";
+        var kontrole = document.createElement("div");
+        kontrole.className = "Kontrole";
         host.appendChild(kontrole);
-        
+
         this.prikaziIznajmljivanja(tabela);
     }
-    prikaziIznajmljivanja(host)
-    {
+    prikaziIznajmljivanja(host) {
         this.removeAllChildNodes(host);
 
-        this.listaIznajmljivanja=[];
+        this.listaIznajmljivanja = [];
         fetch("https://localhost:5001/Iznajmljivanje/Sva_iznajmljivanja")
             .then(p => {
                 p.json().then(izn => {
                     izn.forEach(A => {
                         console.log(A);
-                        var iznm = new Iznajmljivanje(A.id_iznajmljivanje, A.datumIznajmljivanja, A.datumVracanja, A.knjiga,A.clan, A.bibliotekar);
-                    
+                        var iznm = new Iznajmljivanje(A.id_iznajmljivanje, A.datumIznajmljivanja, A.datumVracanja, A.knjiga, A.clan, A.bibliotekar);
+
                         this.listaIznajmljivanja.push(iznm);
                     });
 
@@ -1611,14 +1655,14 @@ export class Biblioteka
                     iznmTabela.appendChild(tabelaheader);
 
                     var tr = document.createElement("tr");
-                    tr.className="iznZaglavlje";
+                    tr.className = "iznZaglavlje";
                     tabelaheader.appendChild(tr);
 
                     let th;
-                    var zaglavlje = ["Rbr", "Clan", "Knjiga","Datum uzimanja","Datum vracanja","Bibliotekar","Novi datum vracanja",""];
+                    var zaglavlje = ["Rbr", "Clan", "Knjiga", "Datum uzimanja", "Datum vracanja", "Bibliotekar", "Novi datum vracanja", ""];
                     zaglavlje.forEach(el => {
                         th = document.createElement("th");
-                        th.className="tdIznm";
+                        th.className = "tdIznm";
                         th.innerHTML = el;
                         tr.appendChild(th);
                     })
@@ -1630,42 +1674,45 @@ export class Biblioteka
                         A.crtaj(iznmTabela);
                     })
 
-                    this.container.querySelectorAll(".RedIznajmljivanje").forEach(I=>{
+                    this.container.querySelectorAll(".RedIznajmljivanje").forEach(I => {
                         console.log(I);
 
                         var elDatum = document.createElement("td");
-                        elDatum.className="tdIznm";
-                        var dtp=document.createElement("input");
-                        dtp.setAttribute("type","date");
-                        dtp.className="datapicker";
+                        elDatum.className = "tdIznm";
+                        var dtp = document.createElement("input");
+                        dtp.setAttribute("type", "date");
+                        dtp.className = "datapicker";
                         elDatum.appendChild(dtp);
                         I.appendChild(elDatum);
 
-                        var elDugme=document.createElement("td");
-                        elDugme.className="tdIznm";
+                        var elDugme = document.createElement("td");
+                        elDugme.className = "tdIznm";
                         var btn = document.createElement("button");
-                        btn.className="iznmBtn";
-                        
-                        let rbr=I.querySelector(".RedniBroj");
-                        let datum=I.querySelector(".datapicker");
-                        btn.innerHTML="+";
-                        
-                        btn.onclick = (ev) => this.vratiKnjigu(rbr.innerHTML,datum.value);
+                        btn.className = "iznmBtn";
+
+                        let rbr = I.querySelector(".RedniBroj");
+                        console.log(rbr);
+                        let datum = I.querySelector(".datapicker");
+                        btn.innerHTML = "+";
+
+                        btn.onclick = (ev) => this.vratiKnjigu(rbr.innerHTML, datum.value);
                         elDugme.appendChild(btn);
                         I.appendChild(elDugme);
                     })
+
+                    var dugme = document.createElement("button");
+                    dugme.className = "dugmeIzn";
+                    dugme.innerHTML = "Dodaj iznajmljivanje";
+                    dugme.onclick = (ev) => this.crtajKontroleIznajmljivanje(host);
+                    host.appendChild(dugme);
                 })
+
             });
-            var dugme=document.createElement("button");
-            dugme.className="dugmeIzn";
-            dugme.innerHTML="Dodaj iznajmljivanje";
-            let desniProzor=document.querySelector(".desniProzor");
-            dugme.onclick=(ev)=>this.crtajKontroleIznajmljivanje(desniProzor);
-            desniProzor.appendChild(dugme);
+
+
     }
 
-    vratiKnjigu(rbr, datum)
-    {
+    vratiKnjigu(rbr, datum) {
         fetch("https://localhost:5001/Iznajmljivanje/Vracanje_knjige/" + rbr + "/" + datum,
             {
                 method: 'PUT',
@@ -1677,25 +1724,24 @@ export class Biblioteka
             }).then(Response => {
 
                 console.log("Uspesno promenjen datum");
-                let desniProzor=document.querySelector(".desniProzor");
+                let desniProzor = document.querySelector(".desniProzor");
                 this.crtajIznajmljivanja(desniProzor);
-        
+
             });
     }
 
-    crtajKontroleIznajmljivanje(host)
-    {
+    crtajKontroleIznajmljivanje(host) {
         this.removeAllChildNodes(host);
         this.crtajHeader(host, "Dodaj novo iznajmljivanje");
 
         var i = 0;
-        var polja = ["Bibliotekar", "Clan", "Knjiga","Datum"];
+        var polja = ["Bibliotekar", "Clan", "Knjiga", "Datum"];
 
-        var b,c,k,d;
-        var divniz = [b,c,k,d];
+        var b, c, k, d;
+        var divniz = [b, c, k, d];
 
         var lbb, lbc, lbk, lbd;
-        var labeleTekst = ["Bibliotekar:", "Clan:", "Knjiga:","Datum:"];
+        var labeleTekst = ["Bibliotekar:", "Clan:", "Knjiga:", "Datum:"];
         var labele = [lbb, lbc, lbk, lbd];
 
         var inpb, inpc, inpk, inpd;
@@ -1707,7 +1753,7 @@ export class Biblioteka
         polja.forEach(D => {
 
             divniz[i] = document.createElement("div");
-            divniz[i].className="divIzn";
+            divniz[i].className = "divIzn";
             poljeKontrole.appendChild(divniz[i]);
 
             labele[i] = document.createElement("label");
@@ -1716,7 +1762,7 @@ export class Biblioteka
             divniz[i].appendChild(labele[i]);
 
             inputs[i] = document.createElement("input");
-            inputs[i].type="text";
+            inputs[i].type = "text";
             inputs[i].className = "InputKontrole";
             divniz[i].appendChild(inputs[i]);
 
@@ -1727,7 +1773,7 @@ export class Biblioteka
 
         var Dodaj, Odustani;
         var Dugmici = [Dodaj, Odustani];
-        var DugmiciKlase = ["Dodaj","Odustani"];
+        var DugmiciKlase = ["Dodaj", "Odustani"];
         var DugmiciLabele = ["Dodaj", "Odustani"];
 
         var i = 0;
@@ -1739,27 +1785,26 @@ export class Biblioteka
             Btns.appendChild(Dugmici[i]);
             i++;
         })
-        Dugmici[0].onclick = (ev) => 
+        Dugmici[0].onclick = (ev) =>
             this.dodajIznajmljivanje(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
         Dugmici[1].onclick = (ev) => this.crtajIznajmljivanja(host);
     }
 
-    dodajIznajmljivanje(bibliotekar,clan,knjiga,datum)
-    {
+    dodajIznajmljivanje(bibliotekar, clan, knjiga, datum) {
         fetch("https://localhost:5001/Iznajmljivanje/Novo_iznajmljivanje/" + datum + "/" + bibliotekar + "/" + knjiga + "/" + clan,
-        {
-            method: 'POST',
-            body: JSON.stringify({
-                "datum": datum,
-                "bibliotekar": bibliotekar,
-                "knjiga": knjiga,
-                "clan": clan
-            })
-        }).then(Response => {
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "datum": datum,
+                    "bibliotekar": bibliotekar,
+                    "knjiga": knjiga,
+                    "clan": clan
+                })
+            }).then(Response => {
 
-            let desnaforma = this.container.querySelector(".desniProzor");
-            this.crtajIznajmljivanja(desnaforma);
-        });
+                let desnaforma = this.container.querySelector(".desniProzor");
+                this.crtajIznajmljivanja(desnaforma);
+            });
     }
     //#endregion
 }

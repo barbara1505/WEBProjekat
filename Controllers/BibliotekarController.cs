@@ -22,6 +22,8 @@ namespace WEBProjekat.Controllers
         [HttpPost]
         public async Task<ActionResult> Zaposli_bibliotekara(int brojKnjizice,  string ime, string prezime, char pol, RadnoVreme smena)
         {
+            if(brojKnjizice<10000||brojKnjizice>99999) return BadRequest("Pogresna vrednost za broj radne knjizice!");
+
             if (string.IsNullOrEmpty(ime)) return BadRequest("Neophodno je ime bibliotekara!");
             if (ime.Length > 20) return BadRequest("Predugacko ime!");
 

@@ -27,7 +27,10 @@ export class Autor
         tr.appendChild(el);
 
         el = document.createElement("td");
+        if(this.godinaSmrti!==0)
         el.innerHTML = this.godinaSmrti;
+        else
+        el.innerHTML="/";
         tr.appendChild(el);
     }
 }

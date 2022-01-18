@@ -18,7 +18,7 @@ namespace WEBProjekat.Controllers
             Context = context;
         }
 
-        [Route("Upisi_clana/{Ime}/{Prezime}/{Adresa}/{Telefon}")]
+        [Route("Upisi_clana/{Ime}/{Prezime}/{Adresa}/{Telefon}/{brojKarte}")]
         [HttpPost]
         public async Task<ActionResult> UpisClana(string Ime, string Prezime, string Adresa, string Telefon, int brojKarte )
         {

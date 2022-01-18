@@ -1,3 +1,10 @@
+body
+{
+    align-self: stretch;
+    background-image: url("Pozadina.png");
+    background-repeat: no-repeat;
+    background-size: stretch;
+}
 .zaglavljeStil
 {
    display: flex;
@@ -5,20 +12,14 @@
    flex-wrap: wrap;
    justify-content: space-between;
 }
+
 .naslovStil
 {
     display: flex;
     font-size: 40px;
     font-style: italic;
     font-family:'Trebuchet MS';
-    color:crimson;
-}
-.naslovLabStil
-{
-    display: flex;
-    font-size: 25px;
-    font-family:'Trebuchet MS';
-    color:darkcyan;
+    color:rgb(140,0,140);
 }
 .glavnaForma
 {
@@ -36,7 +37,7 @@
     text-align:center;
     background-color:rgb(250, 250, 160);
     border-style: solid;
-    border-color: orange;
+    border-color:rgb(140,0,140);
    border-radius: 30px;
 }
 .dugme:hover
@@ -76,7 +77,6 @@
     height: 100%;
 
 }
-
 .levaForma
 {
     display: flex;
@@ -105,16 +105,14 @@ tr:hover
     background-color:lightskyblue;   
 }
 
-
 .labeleKontrole 
 {
-    font-size: 15px;
+    font-size: 18px;
     font-family: 'Trebuchet MS';
     color: rgb(131, 9, 9);
     margin-right: 20px;
     margin-bottom: 20px;
 }
-
 .InputKontrole 
 {
     text-align: left;
@@ -145,8 +143,8 @@ tr:hover
     height: 100%;
     margin-right: 10px;
     margin-top: 10px;
-    width: 15%;
-    border:greenyellow;
+    width: fit-content;
+    border:rgb(140,0,140);
     border-style: solid;
     border-radius: 15px;
 }
@@ -157,10 +155,19 @@ tr:hover
     height: 100%;
     margin-right: 10px;
     margin-top: 10px;
-    width: 15%;
-    border: rgb(255, 70, 70);
+    margin-bottom: 5px;
+    width: fit-content;
+    border:rgb(140,0,140);
     border-style: solid;
     border-radius: 15px;
+}
+.Dodaj:hover
+{
+    background-color: greenyellow;
+}
+.Odustani:hover
+{
+    background-color: rgb(255, 70, 70);
 }
 .headerStil
 {
@@ -174,7 +181,8 @@ tr:hover
     margin-top: 5px;
     font-family: 'Trebuchet MS';
     font-size: 18px;
-    color:rgb(195, 20, 20);
+    color:rgb(140,0,140);
+    font-weight: bold;
 }
 .dugmeIzn 
 {
@@ -185,7 +193,8 @@ tr:hover
     border: 2px solid rgb(190, 1, 190);
     border-style: solid;
     border-radius: 15px;
-    width: fit-content;
+    width: fit-content
+    ;
 }
 .dugmeIzn:hover
 {
@@ -214,24 +223,16 @@ tr:hover
 .iznmBtn:hover
 {
     background-color: orange;
-    border-color: orange;
+    border-color: rgb(140,0,140);
     border-radius: 5px;
     font-size:20px;
     font-family: 'Trebuchet MS';
 }
 .iznmBtn
 {
-    border-color: orange;
+    border-color: rgb(140,0,140);
     background-color:rgb(250, 250, 160);
     border-radius: 5px;
     font-size:20px;
     font-family: 'Trebuchet MS';
-}
-.Dodaj:hover
-{
-    background-color: greenyellow;
-}
-.Odustani:hover
-{
-    background-color: rgb(255, 70, 70);
 }
