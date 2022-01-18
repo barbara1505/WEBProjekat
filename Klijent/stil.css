@@ -73,9 +73,16 @@ body
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    width: 50%;
-    height: 100%;
 
+    width: fit-content;
+    height: 100%;
+}
+.IznajmljivanjeTabela
+{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: fit-content;
 }
 .levaForma
 {
@@ -206,7 +213,6 @@ tr:hover
     border: 2px solid rgb(190, 1, 190);
     width:fit-content;
     height: 100%;
-
 }
 .RedIznajmljivanje:hover
 {
