@@ -1785,8 +1785,34 @@ export class Biblioteka {
             Btns.appendChild(Dugmici[i]);
             i++;
         })
-        Dugmici[0].onclick = (ev) =>
+        Dugmici[0].onclick = (ev) =>{
+            let b=0;
+            let c=0;
+            let k=0;
+
+            this.listaBibliotekara.forEach(p=>{
+                if(p.brojKnjizice===inputs[0].value) b=1;
+                if(b) return;
+            })
+
+            if(b===0) alert("Ne postoji bibliotekar s tim brojem radne knjizice");
+
+            this.listaClanova.forEach(p=>{
+                if(p.brojkarte===inputs[1].value) c=1;
+                if(c) return;
+            })
+
+            if(c===0) alert("Ne postoji clan s tim brojem clanske karte");
+
+            this.listaKnjiga.forEach(p=>{
+                if(p.naslov===inputs[2].value)  k=1;
+                if(k) return;
+                })
+
+            if(k===0) alert("Ne postoji knjiga s tim naslovom");
+
             this.dodajIznajmljivanje(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
+        }
         Dugmici[1].onclick = (ev) => this.crtajIznajmljivanja(host);
     }
 
