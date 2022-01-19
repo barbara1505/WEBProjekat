@@ -1496,9 +1496,15 @@ export class Biblioteka {
         })
         Dugmici[0].onclick = (ev) => {
             if (inputs[0].value < 1 || inputs[0].value > 10000)
-                alert("Morate uneti vrednost izmedju 1 i 10000");
+                {
+                    alert("Morate uneti vrednost izmedju 1 i 10000");
+                    return;
+                }
             if (inputs[1].value != "Standardna" || inputs[1].value != "Djacka" || inputs[1].value != "Studentska" || inputs[1].value != "Penzionerska")
-                alert("Neispravan tip clanske karte!");
+                {
+                    alert("Neispravan tip clanske karte!");
+                    return;
+                }
             this.dodajClanskuKartu(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
         }
         Dugmici[1].onclick = (ev) => this.crtajKontroleKarta(host);
@@ -1795,21 +1801,33 @@ export class Biblioteka {
                 if(b) return;
             })
 
-            if(b===0) alert("Ne postoji bibliotekar s tim brojem radne knjizice");
+            if(b===0) 
+            {
+                alert("Ne postoji bibliotekar s tim brojem radne knjizice");
+                return; 
+            }
 
             this.listaClanova.forEach(p=>{
                 if(p.brojkarte===inputs[1].value) c=1;
                 if(c) return;
             })
 
-            if(c===0) alert("Ne postoji clan s tim brojem clanske karte");
+            if(c===0) 
+            {
+                alert("Ne postoji clan s tim brojem clanske karte");
+                return;
+            }
 
             this.listaKnjiga.forEach(p=>{
                 if(p.naslov===inputs[2].value)  k=1;
                 if(k) return;
                 })
 
-            if(k===0) alert("Ne postoji knjiga s tim naslovom");
+            if(k===0) 
+            {
+                alert("Ne postoji knjiga s tim naslovom");
+                return;
+            }
 
             this.dodajIznajmljivanje(inputs[0].value, inputs[1].value, inputs[2].value, inputs[3].value);
         }
