@@ -616,7 +616,7 @@ export class Biblioteka {
                     forma.className = "zaPrikaz";
                     host.appendChild(forma);
 
-                    this.crtajHeader(forma, "Lista knjiga");
+                    this.crtajHeader(forma, "Lista knjiga odabranog žanra");
 
                     var knjigeTabela = document.createElement("table");
                     knjigeTabela.className = "tabelaKnjige";
@@ -1628,6 +1628,7 @@ export class Biblioteka {
 
     //#region Iznajmljivanja
     crtajIznajmljivanja(host) {
+
         this.removeAllChildNodes(host);
         var tabela = document.createElement("div");
         tabela.className = "IznajmljivanjeTabela";
@@ -1652,6 +1653,7 @@ export class Biblioteka {
 
                         this.listaIznajmljivanja.push(iznm);
                     });
+                    this.crtajHeader(host,"Evidencija iznajmljivanja");
 
                     var iznmTabela = document.createElement("table");
                     iznmTabela.className = "iznmTabela";
@@ -1792,38 +1794,39 @@ export class Biblioteka {
             i++;
         })
         Dugmici[0].onclick = (ev) =>{
-            let b=0;
-            let c=0;
-            let k=0;
+            var b=0;
+            var c=0;
+            var k=0;
 
             this.listaBibliotekara.forEach(p=>{
-                if(p.brojKnjizice===inputs[0].value) b=1;
+            
+                if(p.brojKnjizice==inputs[0].value) b=1;
                 if(b) return;
             })
 
-            if(b===0) 
+            if(b==0) 
             {
                 alert("Ne postoji bibliotekar s tim brojem radne knjizice");
                 return; 
             }
 
             this.listaClanova.forEach(p=>{
-                if(p.brojkarte===inputs[1].value) c=1;
+                if(p.brojKarte==inputs[1].value) c=1;
                 if(c) return;
             })
 
-            if(c===0) 
+            if(c==0) 
             {
                 alert("Ne postoji clan s tim brojem clanske karte");
                 return;
             }
 
             this.listaKnjiga.forEach(p=>{
-                if(p.naslov===inputs[2].value)  k=1;
+                if(p.naslov==inputs[2].value)  k=1;
                 if(k) return;
                 })
 
-            if(k===0) 
+            if(k==0) 
             {
                 alert("Ne postoji knjiga s tim naslovom");
                 return;
